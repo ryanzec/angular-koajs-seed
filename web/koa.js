@@ -4,10 +4,6 @@ var path = require('path');
 var koa = require('koa');
 var app = module.exports = koa();
 
-app.use(serve(__dirname + '/app/styles'), {
-  index: '/app/styles'
-});
-
 //yield compatible read file
 function readFile(file) {
   return function(fn){
