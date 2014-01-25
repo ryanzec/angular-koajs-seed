@@ -26,5 +26,6 @@ angular.module('app.core.routing', [
 angular.module('app.core', [
   'ui.router',
   'app.core.routing',
-  'app.core.constants'
+  'app.core.constants',
+  'app.core.templateInterceptor'
 ]);
