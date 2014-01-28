@@ -13,6 +13,187 @@ var xRegExp = require('xregexp').XRegExp;
 var _ = require('lodash');
 var timer = require("grunt-timer");
 var moment = require('moment');
+var lingo = require('lingo');
+
+var buildMetaData = (function() {
+  //we need to keep tracking of some meta data about the build files to be able to deteremine if we need to generate them
+  var buildMetaDataFilePath = __dirname + '/build-meta-data.json';
+  var currentBuildMetaData = {};
+  var lastBuildMetaData = {};
+  var lastBuildFileKeys = [];
+
+  var changedFilesKeys = [];
+
+  return {
+    initialize: function(metaDataFilePath){
+      buildMetaDataFilePath = metaDataFilePath;
+
+      if(fs.existsSync(buildMetaDataFilePath)) {
+        lastBuildMetaData = JSON.parse(fs.readFileSync(buildMetaDataFilePath, 'ascii'))
+      }
+
+      if(!lastBuildMetaData['workingFiles']) {
+        lastBuildMetaData['workingFiles'] = {};
+      }
+
+      if(!currentBuildMetaData['workingFiles']) {
+        currentBuildMetaData['workingFiles'] = lastBuildMetaData['workingFiles'];
+      }
+
+      if(!lastBuildMetaData['buildFiles']) {
+        lastBuildMetaData['buildFiles'] = {};
+      } else {
+        lastBuildFileKeys = Object.keys(lastBuildMetaData['buildFiles']);
+      }
+
+      if(!currentBuildMetaData['buildFiles']) {
+        currentBuildMetaData['buildFiles'] = lastBuildMetaData['buildFiles'];
+      }
+
+      //todo: look at using this instead of above
+      //currentBuildMetaData = _.merge(lastBuildMetaData, currentBuildMetaData);
+
+      //lets cache all the files that have changed upfront
+      for(var resourcePath in lastBuildMetaData['workingFiles']) {
+        if(
+        lastBuildMetaData['workingFiles'][resourcePath]
+        && this.getFileHash(resourcePath) !== lastBuildMetaData['workingFiles'][resourcePath].fileHash
+        ) {
+          changedFilesKeys.push(resourcePath);
+        }
+      }
+    },
+
+    invalidateBuildFile: function(file) {
+      delete currentBuildMetaData['buildFiles'][file];
+    },
+
+    /**
+     * Tells whether or not the any of the files in the list has a changed one
+     *
+     * @param files
+     * @returns {*}
+     */
+    hasChangedFile: function(files) {
+      for(var file in files) {
+        if(changedFilesKeys.indexOf(path.relative(__dirname, files[file])) !== -1) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+
+    /**
+     * Determines if the passed in files list is the same list of files used the last time the compiled files was generated
+     *
+     * @param originalFileName
+     * @param files
+     * @returns {boolean}
+     */
+    hasSameFiles: function(originalFileName, files) {
+      var hasSameFiles;
+
+      if(!lastBuildMetaData['buildFiles'] || !lastBuildMetaData['buildFiles'][originalFileName]) {
+        hasSameFiles = false;
+      }
+
+      for(var file in files) {
+        if(!lastBuildMetaData['buildFiles'][originalFileName] || lastBuildMetaData['buildFiles'][originalFileName].indexOf(path.relative(__dirname, files[file])) === -1) {
+          hasSameFiles = false;
+        }
+      }
+
+      if(hasSameFiles !== false) {
+        hasSameFiles = files.length === lastBuildMetaData['buildFiles'][originalFileName].length;
+      }
+
+      //if it is not the same, remove the stored files since it will be rebuilt anyways
+      if(hasSameFiles === false) {
+        lastBuildMetaData['buildFiles'][originalFileName] = [];
+      }
+
+      return hasSameFiles;
+    },
+
+    /**
+     * Returns all the compiled files that used the files of files during the last build
+     *
+     * @param files
+     * @returns {Array}
+     */
+    getCompiledFiles: function(files) {
+      var filePaths = [];
+
+      for(file in files) {
+        _.forEach(currentBuildMetaData['buildFiles'], function(fileSet, buildFile) {
+          if(_.indexOf(fileSet, files[file].replace(__dirname + '/', '')) !== -1 && _.indexOf(filePaths, buildFile) === -1) {
+            filePaths.push(buildFile);
+          }
+        });
+      }
+
+      return filePaths;
+    },
+
+    /**
+     * Generates a sha1 hash of the contents of a files
+     *
+     * @param filePath
+     * @returns {*}
+     */
+    getFileHash: function(filePath) {
+      var shasum = crypto.createHash('sha1');
+
+      if(fs.existsSync(filePath)) {
+        return shasum.update(fs.readFileSync(filePath, 'ascii')).digest('hex');
+      } else {
+        return false;
+      }
+    },
+
+    /**
+     * Adds meta data information for the build
+     *
+     * @param filePath
+     * @param compiledFilePath
+     * @param originalFileName
+     */
+    addBuildMetaDataFile: function(filePath, compiledFilePath) {
+      filePath = path.relative(__dirname, filePath);
+
+      currentBuildMetaData['workingFiles'][filePath] = {
+        //a hash of the file is probably a more accurate way of determine if the file has changed than last modified datetime
+        fileHash: this.getFileHash(filePath)
+      };
+
+      if(!currentBuildMetaData['buildFiles']) {
+        currentBuildMetaData['buildFiles'] = {};
+      }
+
+      if(!currentBuildMetaData['buildFiles'][compiledFilePath]) {
+        currentBuildMetaData['buildFiles'][compiledFilePath] = [];
+
+        if(lastBuildMetaData['buildFiles']) {
+          lastBuildMetaData['buildFiles'][compiledFilePath] = [];
+        }
+      }
+
+      if(_.indexOf(currentBuildMetaData['buildFiles'][compiledFilePath], filePath) === -1) {
+        currentBuildMetaData['buildFiles'][compiledFilePath].push(filePath);
+      }
+    },
+
+    hasWorkingFiles: function() {
+      return lastBuildMetaData['workingFiles'] && Object.keys(lastBuildMetaData['workingFiles']).length > 0;
+    },
+
+    writeFile: function() {
+      console.log(('writing out build meta data file ' + buildMetaDataFilePath).green);
+      fs.writeFileSync(buildMetaDataFilePath, JSON.stringify(currentBuildMetaData, null, 2), 'ascii');
+    }
+  };
+}());
 
 module.exports = function(grunt) {
   timer.init(grunt);
@@ -20,19 +201,42 @@ module.exports = function(grunt) {
     webRoot: 'web', //relative path from this directory
     appRoot: 'app' //relative path from web root
   };
+  var applicationCombineFiles = [
+    'app/application.js',
+    'app/templates.js',
+    'app/components/core/module.js',
+    'app/components/core/template-interceptor.js',
+    'app/components/home/module.js',
+    'app/components/home/home.js'
+  ];
   grunt.initConfig({
     globalConfig: globalConfig,
     build: {
       path: '<%= globalConfig.webRoot %>',
       buildPath: 'build',
-      buildFileName: 'index.html',
-      sourceFileName: 'index-dev.html',
-      utFileName: 'index-ut.html',
-      utJavascriptFiles: [
-        'components/jshashes/hashes.js',
-        'components/angular-mockable-http-provider/mockable-http-provider.js',
-        '<%= globalConfig.appRoot %>/ui-testing.js'
-      ],
+      combineAssets: {
+        default: {
+          'app/build/libraries.js': [
+            'components/jshashes/hashes.js',
+            'components/moment/moment.js',
+            'components/jquery/jquery.js',
+            'components/angular/angular.js',
+            'components/angular-ui-router/release/angular-ui-router.js'
+          ],
+          'app/build/application.js': applicationCombineFiles
+        },
+        uiTesting: {
+          'app/build/libraries-ui-testing.js': [
+            'components/jshashes/hashes.js',
+            'components/moment/moment.js',
+            'components/jquery/jquery.js',
+            'components/angular/angular.js',
+            'components/angular-mockable-http-provider/mockable-http-provider.js',
+            'components/angular-ui-router/release/angular-ui-router.js'
+          ],
+          'app/build/application.js': applicationCombineFiles
+        }
+      },
       rewriteAssets: {
         fileTypes: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css']/*,
         prependSlash: true,
@@ -46,21 +250,14 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      sass: {
+      buildDevelopment: {
         files: [
-          '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/**/*.scss'
+          '*.*',
+          'web/app/**/*.*',
+          'web/components/**/*.*',
+          'web/index-builder.html'
         ],
-        tasks: ['sass'],
-        options: {
-          nospawn: true
-        }
-      },
-      ngtemplates: {
-        files: [
-          '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/**/*.html',
-          '<%= globalConfig.webRoot %>/components/nucleus-angular*/assets/templates/**/*.html'
-        ],
-        tasks: ['ngtemplates'],
+        tasks: ['build-development'],
         options: {
           nospawn: true
         }
@@ -68,6 +265,9 @@ module.exports = function(grunt) {
     },
     sass: {
       dist: {
+        options: {
+          sourcemap: true
+        },
         files: {
           '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/styles/main.css': [
             '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/styles/main.scss'
@@ -166,7 +366,7 @@ module.exports = function(grunt) {
 
           globals: {
             //library/helper globals
-            '_': false, // underscore's global
+            '_': false, // lodash's global
             'angular': false, // angular's global
 
             //testing globals
@@ -249,237 +449,39 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-complexity');
   grunt.loadNpmTasks('grunt-angular-templates');
 
-  //this task will include everything in to to generate the final production version of the code
-  grunt.registerTask('build-production', [
-    'jshint',
+  grunt.registerTask('build-development', [
     'sass',
-    'karma',
     'ngtemplates:app',
-    'build:production',
-    'rewrite-assets:production',
-    'complexity:reference'
+    'combine-assets:default',
+    'rewrite-assets:default'
   ]);
 
   grunt.registerTask('build-ui-testing', [
     'sass',
     'ngtemplates:app',
-    'build:ui-testing',
+    'combine-assets:ui-testing',
     'rewrite-assets:ui-testing'
   ]);
 
-  //custom tasks
-  grunt.registerTask('build', 'Builds a production version of your application', function() {
+  grunt.registerTask('build-production', [
+    'jshint',
+    'sass',
+    'karma',
+    'ngtemplates:app',
+    'combine-assets:default',
+    'rewrite-assets:default',
+    'complexity:reference'
+  ]);
+
+  buildMetaData.initialize(__dirname + '/build-meta-data.json');
+
+  grunt.registerTask('combine-assets', 'Combines assets files (just works with javascript files right now)', function() {
     //when deleting build files, lets not delete these
     var dontDeleteFiles = ['.svn', '.git', '.gitignore', '.gitkeep'];
-
-    //we need to keep tracking of some meta data about the build files to be able to deteremine if we need to generate them
-    var buildMetaDataFilePath = __dirname + '/build-meta-data.json';
-    var currentBuildMetaData = {};
-    var lastBuildMetaData = {};
-
-    if(fs.existsSync(buildMetaDataFilePath)) {
-      lastBuildMetaData = JSON.parse(fs.readFileSync(buildMetaDataFilePath, 'ascii'))
-    }
-
-    if(!currentBuildMetaData['workingFiles']) {
-      currentBuildMetaData['workingFiles'] = {};
-    }
-
-    if(!lastBuildMetaData['workingFiles']) {
-      lastBuildMetaData['workingFiles'] = {};
-    }
-
-    //lets cache all the files that have changed upfront
-    var changedFiles = {};
-    var changedFilesKeys = [];
-
-    for(var resourcePath in lastBuildMetaData['workingFiles']) {
-      if(
-      lastBuildMetaData['workingFiles'][resourcePath]
-      && getFileHash(resourcePath) !== lastBuildMetaData['workingFiles'][resourcePath].fileHash
-      ) {
-        changedFiles[resourcePath] = lastBuildMetaData['workingFiles'][resourcePath].compiledFilePath;
-      }
-    }
-
-    changedFilesKeys = Object.keys(changedFiles);
-
-    /**
-     * Tells whether or not the any of the files in the list has a changed one
-     *
-     * @param files
-     * @returns {*}
-     */
-    function hasChangedFile(files) {
-      for(var file in files) {
-        if(changedFilesKeys.indexOf(path.relative(__dirname, files[file])) !== -1) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    /**
-     * Determines if the passed in files list is the same list of files used the last time the compiled files was generated
-     *
-     * @param originalFileName
-     * @param files
-     * @returns {boolean}
-     */
-    function hasSameFiles(originalFileName, files) {
-      if(!lastBuildMetaData['buildFiles'] || !lastBuildMetaData['buildFiles'][originalFileName]) {
-        return false;
-      }
-
-      for(var file in files) {
-        if(lastBuildMetaData['buildFiles'][originalFileName].indexOf(path.relative(__dirname, files[file])) === -1) {
-          return false
-        }
-      }
-
-      return files.length === lastBuildMetaData['buildFiles'][originalFileName].length;
-
-
-    }
-
-    /**
-     * Returns all the compiled files that used the files of files during the last build
-     *
-     * @param files
-     * @returns {Array}
-     */
-    function getCompiledFiles(files) {
-      var filePaths = [];
-
-      for(file in files) {
-        if(
-        filePaths.indexOf(lastBuildMetaData['workingFiles'][path.relative(__dirname, files[file])]) === -1
-        && lastBuildMetaData['workingFiles'][path.relative(__dirname, files[file])]
-        ) {
-          filePaths.push(lastBuildMetaData['workingFiles'][path.relative(__dirname, files[file])].compiledFilePath);
-        }
-      }
-
-      return filePaths;
-    }
-
-    /**
-     * Generates a sha1 hash of the contents of a files
-     *
-     * @param filePath
-     * @returns {*}
-     */
-    function getFileHash(filePath) {
-      var shasum = crypto.createHash('sha1');
-
-      if(fs.existsSync(filePath)) {
-        return shasum.update(fs.readFileSync(filePath, 'ascii')).digest('hex');
-      } else {
-        return false;
-      }
-
-    }
-
-    /**
-     * Adds meta data information for the build
-     *
-     * @param filePath
-     * @param compiledFilePath
-     * @param originalFileName
-     */
-    function addBuildMetaDataFile(filePath, compiledFilePath, originalFileName) {
-      filePath = path.relative(__dirname, filePath);
-
-      currentBuildMetaData['workingFiles'][filePath] = {
-        //a hash of the file is probably a more accurate way of determine if the file has changed than last modified datetime
-        fileHash: getFileHash(filePath),
-        compiledFilePath: path.relative(__dirname, compiledFilePath)
-      };
-
-      if(!currentBuildMetaData['buildFiles']) {
-        currentBuildMetaData['buildFiles'] = {};
-      }
-
-      if(!currentBuildMetaData['buildFiles'][originalFileName]) {
-        currentBuildMetaData['buildFiles'][originalFileName] = [];
-
-        if(lastBuildMetaData['buildFiles']) {
-          lastBuildMetaData['buildFiles'][originalFileName] = [];
-        }
-      }
-
-      currentBuildMetaData['buildFiles'][originalFileName].push(filePath);
-    }
-
-    function buildCssFiles(files, destinationFile) {
-      function buildCompiledFile(files, destinationFile, originalFileName) {
-        if(
-        (!currentBuildMetaData['workingFiles'] || Object.keys(currentBuildMetaData['workingFiles']).length === 0)
-        && (!lastBuildMetaData['workingFiles'] || Object.keys(lastBuildMetaData['workingFiles']).length === 0)
-        && fs.existsSync(path.dirname(destinationFile))
-        ) {
-          var items = fs.readdirSync(path.dirname(destinationFile));
-
-          for(var z = 0; z < items.length; z += 1) {
-            if(dontDeleteFiles.indexOf(items[z]) === -1) {
-              console.log(('removing file ' + path.dirname(destinationFile) + '/' + items[z]).yellow);
-              rimraf.sync(path.dirname(destinationFile) + '/' + items[z]);
-            }
-          }
-        }
-
-        if(!fs.existsSync(path.dirname(destinationFile))) {
-          mkdirp.sync(path.dirname(destinationFile));
-        }
-
-        files.forEach(function(filePath){
-          addBuildMetaDataFile(filePath, destinationFile, originalFileName);
-          console.log(('adding ' + filePath + ' to ' + destinationFile).green);
-          source = fs.readFileSync(filePath, 'ascii');
-          minSource = cleanCss.process(source);
-
-          fs.appendFileSync(destinationFile, minSource, 'ascii');
-        });
-      };
-
-      var shasum = crypto.createHash('sha1');
-      var fileHashPrefix = shasum.update(new Date().getTime() + destinationFile).digest('hex');
-      var source, minSource;
-      var originalFileName = path.basename(destinationFile);
-
-      //we want to add in a hash to the destination file name in order to make sure the browser redownloads the files on next update
-      destinationFile = path.dirname(destinationFile) + '/' + fileHashPrefix + '-' + path.basename(destinationFile);
-
-      var changedFile = hasChangedFile(files);
-      var sameFiles = hasSameFiles(originalFileName, files);
-      var compiledFiles = getCompiledFiles(files);
-
-      if(changedFile || !sameFiles) {
-        for(compiledFile in compiledFiles) {
-          if(fs.existsSync(compiledFiles[compiledFile])) {
-            console.log(('removing file ' + compiledFiles[compiledFile]).yellow);
-            rimraf.sync(compiledFiles[compiledFile]);
-          }
-        }
-
-        buildCompiledFile(files, destinationFile, originalFileName);
-      } else if(!changedFile && sameFiles && !fs.existsSync(compiledFiles[0])) {
-        buildCompiledFile(files, destinationFile, originalFileName);
-      } else {
-        destinationFile = compiledFiles[0];
-      }
-
-      return destinationFile;
-    };
-
+    var combineType = this.args[0] || 'default';
     function buildJavascriptFiles(files, destinationFile) {
       function buildCompiledFile(files, destinationFile, originalFileName) {
-        if(
-        (!currentBuildMetaData['workingFiles'] || Object.keys(currentBuildMetaData['workingFiles']).length === 0)
-        && (!lastBuildMetaData['workingFiles'] || Object.keys(lastBuildMetaData['workingFiles']).length === 0)
-        && fs.existsSync(path.dirname(destinationFile))
-        ) {
+        if(!buildMetaData.hasWorkingFiles() && fs.existsSync(path.dirname(destinationFile))) {
           var items = fs.readdirSync(path.dirname(destinationFile));
 
           for(var z = 0; z < items.length; z += 1) {
@@ -490,17 +492,47 @@ module.exports = function(grunt) {
           }
         }
 
+        //need to update the build meta data
+        var fileList = [];
         files.forEach(function(filePath){
-          addBuildMetaDataFile(filePath, destinationFile, originalFileName);
-          console.log(('adding ' + filePath + ' to ' + destinationFile).green);
-          source = fs.readFileSync(filePath, 'ascii');
-
-          //lets just use the simple version for now
-          //todo: think: look into more advance options at some point
-          var minSource = uglifyjs.minify(source, {fromString: true});
-
-          fs.appendFileSync(destinationFile, minSource.code, 'ascii');
+          fileList.push(filePath.replace(__dirname + '/', ''));
+          buildMetaData.addBuildMetaDataFile(filePath, destinationFile);
         });
+
+        var sourceMapFileName = originalFileName + '.map';
+        var sourceMapDestination = __dirname  + "/" + grunt.config.get('build').path + '/source/' + sourceMapFileName;
+
+        //make sure source maps directory exists
+        if(!fs.existsSync(path.dirname(sourceMapDestination))) {
+          mkdirp.sync(path.dirname(sourceMapDestination));
+        } else {
+          rimraf.sync(sourceMapDestination);
+        }
+
+        //make sure build directory exists
+        if(!fs.existsSync(path.dirname(destinationFile))) {
+          mkdirp.sync(path.dirname(destinationFile));
+        } else {
+          rimraf.sync(destinationFile);
+        }
+
+        console.log(('combining files:\n' + fileList.join('\n') + '\n' + 'into:\n' + destinationFile + '\n').green);
+
+        var minSource = uglifyjs.minify(fileList, {
+          outSourceMap: sourceMapFileName,
+          sourceRoot: '/'
+        });
+
+        //not sure the best way to do this but since grunt is executed one directory up from the web root, I have to the web root directory from the sources
+        //todo: see if there is a better way to do this
+        var mappingData = JSON.parse(minSource.map);
+        mappingData.sources = _.map(mappingData.sources, function(path) {
+          return path.replace(globalConfig.webRoot + '/', '');
+        });
+        var mappingDataSource = JSON.stringify(mappingData);
+
+        fs.appendFileSync(destinationFile, minSource.code + "\n" + '//# sourceMappingURL=/source/' + sourceMapFileName, 'ascii');
+        fs.appendFileSync(sourceMapDestination, mappingDataSource, 'ascii');
       };
 
       var shasum = crypto.createHash('sha1');
@@ -509,23 +541,27 @@ module.exports = function(grunt) {
       var uglify = uglifyjs.uglify;
       var source, minSource;
       var originalFileName = path.basename(destinationFile);
+      var changedFile = buildMetaData.hasChangedFile(files);
+      var compiledFiles = buildMetaData.getCompiledFiles(files);
 
-      //we want to add in a hash to the destination file name in order to make sure the browser redownloads the files on next update
-      destinationFile = path.dirname(destinationFile) + '/' + fileHashPrefix + '-' + path.basename(destinationFile);
-      var changedFile = hasChangedFile(files);
-      var sameFiles = hasSameFiles(originalFileName, files);
-      var compiledFiles = getCompiledFiles(files);
+      //invalidate the compile files if the files have changed
+      if(changedFile === true) {
+        for(compiledFile in compiledFiles) {
+          console.log(('invalidating ' + compiledFiles[compiledFile]).yellow);
+          buildMetaData.invalidateBuildFile(compiledFiles[compiledFile]);
+        }
+      }
+
+      var sameFiles = buildMetaData.hasSameFiles(destinationFile, files);
 
       if(changedFile || !sameFiles) {
-        for(compiledFile in compiledFiles) {
-          if(fs.existsSync(compiledFiles[compiledFile])) {
-            console.log(('removing file ' + compiledFiles[compiledFile]).yellow);
-            rimraf.sync(compiledFiles[compiledFile]);
-          }
+        if(fs.existsSync(destinationFile)) {
+          console.log(('removing file ' + destinationFile).yellow);
+          rimraf.sync(destinationFile);
         }
 
         buildCompiledFile(files, destinationFile, originalFileName);
-      } else if(!changedFile && sameFiles && !fs.existsSync(compiledFiles[0])) {
+      } else if(!changedFile && sameFiles && !fs.existsSync(destinationFile)) {
         buildCompiledFile(files, destinationFile, originalFileName);
       } else {
         destinationFile = compiledFiles[0];
@@ -534,149 +570,24 @@ module.exports = function(grunt) {
       return destinationFile;
     };
 
-    function parseForBuildComments(htmlParserHandler) {
-      var cssFiles = Object.create(null);
-      var javascriptFiles = Object.create(null);
-      var stack = htmlParserHandler.dom;
-      var tracking = false;
-      var trackingType = null;
-      var currentFile = null;
-      var temp = null;
+    var combineAssets = grunt.config.get('build').combineAssets[lingo.camelcase(combineType.replace('-', ' '))];
 
-      function traverse(element) {
-        if(element.type === 'comment' || (tracking === true && (element.type === 'tag' || element.type === 'script'))) {
-          if(element.type === 'comment') {
-            if(element.raw.indexOf('START-CSS-MIN') !== -1) {
-              currentFile = element.raw.split(':')[1].trim();
+    _.forEach(combineAssets, function(item, key) {
+      //add the web root directory to the file paths
+      item = _.map(item, function(path) {
+        return __dirname + '/' + globalConfig.webRoot + '/' + path;
+      });
 
-              if(cssFiles[currentFile] === undefined) {
-                cssFiles[currentFile] = [];
-              }
-
-              tracking = true;
-              trackingType = 'css';
-            } else if(element.raw.indexOf('START-JS-MIN') !== -1) {
-              currentFile = element.raw.split(':')[1].trim();
-
-              if(javascriptFiles[currentFile] === undefined) {
-                javascriptFiles[currentFile] = [];
-              }
-
-              tracking = true;
-              trackingType = 'js';
-            } else if(element.raw.indexOf('END-CSS-MIN') !== -1) {
-              tracking = false;
-              trackingType = null;
-            } else if(element.raw.indexOf('END-JS-MIN') !== -1) {
-              tracking = false;
-              trackingType = null;
-            }
-          } else {
-            if(tracking === true) {
-              if(trackingType === 'css') {
-                if(element.attribs.href.slice(0, 1) !== '/'){
-                  element.attribs.href = '/' + element.attribs.href;
-                }
-                cssFiles[currentFile].push(__dirname + '/' + applicationPath + element.attribs.href);
-              } else {
-                if(element.attribs.src.slice(0, 1) !== '/'){
-                  element.attribs.src = '/' + element.attribs.src;
-                }
-                javascriptFiles[currentFile].push(__dirname + '/' + applicationPath +  element.attribs.src);
-              }
-            }
-          }
-        }
-
-        if (element.children) {
-          element.children.forEach(traverse);
-        }
-      };
-
-      stack.forEach(traverse);
-
-      return {
-        cssFiles: cssFiles,
-        javascriptFiles: javascriptFiles
-      }
-    };
-
-    var buildType = this.args[0] || 'production';
-    var applicationPath = grunt.config.get('build').path;
-    var applicationAbsolutePath = __dirname + '/' + applicationPath;
-    var buildIndexFilePath = applicationAbsolutePath + '/' + (buildType == 'production' ? grunt.config.get('build').buildFileName : grunt.config.get('build').utFileName);
-    var sourceIndexFilePath = applicationAbsolutePath + '/' + grunt.config.get('build').sourceFileName;
-    var htmlparser = require("htmlparser");
-    var rawHtml = fs.readFileSync(sourceIndexFilePath, 'ascii');
-
-    var handler = new htmlparser.DefaultHandler(function (error, dom) {
-      if (error) {
-        console.log(error.red);
-      }
+      buildJavascriptFiles(item, globalConfig.webRoot + '/' + key);
     });
 
-    var parser = new htmlparser.Parser(handler);
-    parser.parseComplete(rawHtml);
-
-    if(buildType == 'production') {
-      filesToBuild = parseForBuildComments(handler);
-
-      for(var desinationFile in filesToBuild.cssFiles) {
-        var regexp = xRegExp('<!-- START-CSS-MIN:' + desinationFile.replace(applicationAbsolutePath + '/', '') + ' -->(.*?)<!-- END-CSS-MIN -->', 's');
-        var text = xRegExp.exec(rawHtml, regexp);
-
-        if(text) {
-          text = text[0];
-          var newFileName = buildCssFiles(filesToBuild.cssFiles[desinationFile], applicationPath + '/' + desinationFile);
-          rawHtml = rawHtml.replace(text, '<link type="text/css" rel="stylesheet" href="' + newFileName.replace(applicationPath + '/', '') + '">');
-        }
-      }
-
-      for(var desinationFile in filesToBuild.javascriptFiles) {
-        var regexp = xRegExp('<!-- START-JS-MIN:' + desinationFile.replace(applicationAbsolutePath + '/', '') + ' -->(.*?)<!-- END-JS-MIN -->', 's');
-        var text = xRegExp.exec(rawHtml, regexp);
-
-        if(text) {
-          text = text[0];
-          var newFileName = buildJavascriptFiles(filesToBuild.javascriptFiles[desinationFile], applicationPath + '/' + desinationFile);
-          rawHtml = rawHtml.replace(text, '<script type="text/javascript" src="' + newFileName.replace(applicationPath + '/', '') + '"></script>');
-        }
-      }
-
-      console.log(('writing out ' + buildIndexFilePath + ' file').green);
-      fs.writeFileSync(buildIndexFilePath, rawHtml, 'ascii');
-
-      //if we have gotten here then it is safe to write the new build meta data file
-      currentBuildMetaData = _.merge(lastBuildMetaData, currentBuildMetaData);
-      console.log(('writing out build meta data file ' + buildMetaDataFilePath).green);
-      fs.writeFileSync(buildMetaDataFilePath, JSON.stringify(currentBuildMetaData, null, 2), 'ascii');
-    } else if(buildType == 'ui-testing') {
-      var regexp = xRegExp('<!-- UT-INCLUDE -->', 's');
-      var text = xRegExp.exec(rawHtml, regexp);
-      var utReplace = '';
-
-      if(text) {
-        text = text[0];
-
-        grunt.config.get('build').utJavascriptFiles.forEach(function(filePath) {
-          utReplace += '<script type="text/javascript" src="' + filePath + '"></script>\n';
-        });
-
-        rawHtml = rawHtml.replace(text, utReplace);
-      }
-
-      rawHtml = rawHtml.replace(grunt.config.get('globalConfig').appRoot + '/components/core/application-modules.js', grunt.config.get('globalConfig').appRoot + '/components/core/application-modules-ut.js');
-
-      console.log(('writing out ' + buildIndexFilePath + ' file').green);
-      fs.writeFileSync(buildIndexFilePath, rawHtml, 'ascii');
-    } else {
-      console.log(("No proper build type given, use 'production' or 'ui-testing'").red);
-    }
+    //todo: convert to method
+    buildMetaData.writeFile();
   });
 
   //todo: this should just be a different target for the main build task
   grunt.registerTask('rewrite-assets', 'Rewrites urls for assets to prevent caching issues', function() {
-    var rewriteType = this.args[0] || 'production';
+    var rewriteType = this.args[0] || 'default';
     var rewriteAssetsConfig = grunt.config.get('build').rewriteAssets;
 
     if(rewriteAssetsConfig) {
@@ -705,14 +616,15 @@ module.exports = function(grunt) {
 
       var filesToProcess = [];
 
-      if(rewriteType === 'production') {
+      //todo: can we make this part of the config
+      if(rewriteType === 'default') {
         filesToProcess = recursiveWalk(__dirname + '/' + grunt.config.get('globalConfig').webRoot + '/' + grunt.config.get('globalConfig').appRoot + '/' + grunt.config.get('build').buildPath);
 
         filesToProcess.push(__dirname + '/' + grunt.config.get('globalConfig').webRoot + '/index.html');
       } else if(rewriteType === 'ui-testing') {
         filesToProcess =[__dirname + '/' + grunt.config.get('globalConfig').webRoot + '/index-ut.html'];
       } else {
-        console.log(("No proper rewrite type given, use 'production' or 'ui-testing'").red);
+        console.log(("No proper rewrite type given, use 'default' or 'ui-testing'").red);
       }
 
       var currentDomainKey = 0;

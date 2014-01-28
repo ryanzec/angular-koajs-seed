@@ -3,6 +3,8 @@ node_modules/
 .sass-cache/*
 web/.sass-cache/*
 web/components/*
+*.css.map
+*.js.map
 
 #you might want to remove these next 3 lines if you want to release or test anything using git as a release mechanism
 web/app/build/*

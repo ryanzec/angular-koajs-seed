@@ -16,7 +16,8 @@ app.use(function *() {
   var validRootDirectories = [
     'app',
     'components',
-    'static'
+    'static',
+    'source'
   ];
 
   if(validRootDirectories.indexOf(rootDirectory) !== -1) {
@@ -33,7 +34,7 @@ app.use(function *() {
     });
   } else {
     //determine the index file to load
-    var indexFile = 'index-dev.html';
+    var indexFile = 'index.html';
 
     if(this.req.headers['user-agent'] === 'UI_TESTING_MODE' || this.request.query.uiTestingMode === 'true') {
       indexFile = 'index-ut.html';

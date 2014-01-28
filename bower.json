@@ -1,15 +1,17 @@
 {
-  "name": "angular-seed",
+  "name": "angular-koajs-seed",
   "version": "0.2.0",
   "dependencies": {
-    "jquery": "2.0.3",
-    "moment": "2.0.0",
-    "modernizr": "2.6.2",
-    "lodash": "1.2.1",
-    "angular": "1.2.8",
-    "angular-ui-router": "0.2.7"
+    "jquery": "2.1.0",
+    "moment": "2.5.1",
+    "lodash": "2.4.1",
+    "angular": "1.2.10",
+    "angular-ui-router": "0.2.8-bowratic-tedium",
+    "jshashes": "1.0.4",
+    "angular-mockable-http-provider": "0.2.1"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.8"
+    "angular-mocks": "1.2.10",
+    "angular-mockable-http-provider": "0.2.1"
   }
 }
