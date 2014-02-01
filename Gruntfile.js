@@ -201,6 +201,26 @@ module.exports = function(grunt) {
     webRoot: 'web', //relative path from this directory
     appRoot: 'app' //relative path from web root
   };
+  var bowerCopyFiles = {
+    'lodash/dist/lodash.min.js': 'lodash/dist/lodash.min.js',
+    'jshashes/hashes.js': 'jshashes/hashes.js',
+    'moment/moment.js': 'moment/moment.js',
+    'jquery/jquery.js': 'jquery/jquery.js',
+    'angular/angular.js': 'angular/angular.js',
+    'angular-ui-router/release/angular-ui-router.js': 'angular-ui-router/release/angular-ui-router.js',
+    'angular-mockable-http-provider/mockable-http-provider.js': 'angular-mockable-http-provider/mockable-http-provider.js',
+    'angular-mocks/angular-mocks.js': 'angular-mocks/angular-mocks.js'
+  };
+  var librariesCombineFiles = [
+    'components/jshashes/hashes.js',
+    'components/moment/moment.js',
+    'components/jquery/jquery.js',
+    'components/angular/angular.js',
+    'components/angular-ui-router/release/angular-ui-router.js'
+  ];
+  var uiTestingCombineFiles = [
+    'components/angular-mockable-http-provider/mockable-http-provider.js'
+  ];
   var applicationCombineFiles = [
     'app/application.js',
     'app/templates.js',
@@ -216,25 +236,13 @@ module.exports = function(grunt) {
       buildPath: 'build',
       combineAssets: {
         default: {
-          'app/build/libraries.js': [
-            'components/jshashes/hashes.js',
-            'components/moment/moment.js',
-            'components/jquery/jquery.js',
-            'components/angular/angular.js',
-            'components/angular-ui-router/release/angular-ui-router.js'
-          ],
+          'app/build/libraries.js': librariesCombineFiles,
           'app/build/application.js': applicationCombineFiles
         },
         uiTesting: {
-          'app/build/libraries-ui-testing.js': [
-            'components/jshashes/hashes.js',
-            'components/moment/moment.js',
-            'components/jquery/jquery.js',
-            'components/angular/angular.js',
-            'components/angular-mockable-http-provider/mockable-http-provider.js',
-            'components/angular-ui-router/release/angular-ui-router.js'
-          ],
-          'app/build/application.js': applicationCombineFiles
+          'app/build/libraries.js': librariesCombineFiles,
+          'app/build/application.js': applicationCombineFiles,
+          'app/build/ui-testing.js': uiTestingCombineFiles
         }
       },
       rewriteAssets: {
@@ -404,6 +412,26 @@ module.exports = function(grunt) {
           }
         }
       }
+    },
+    bowercopy: {
+      options: {
+        srcPrefix: 'bower_components'
+      },
+      default: {
+        options: {
+          destPrefix: 'web/components'
+        },
+        files: bowerCopyFiles
+      }
+    },
+    shell: {
+        bower: {
+            options: {
+                stdout: true,
+                stderr: true
+            },
+            command: 'bower install'
+        }
     }
   });
 
@@ -448,6 +476,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-complexity');
   grunt.loadNpmTasks('grunt-angular-templates');
+  grunt.loadNpmTasks('grunt-bowercopy');
+  grunt.loadNpmTasks('grunt-shell');
+
+  grunt.registerTask('bower-install', [
+    'shell:bower',
+    'bowercopy'
+  ]);
 
   grunt.registerTask('build-development', [
     'sass',

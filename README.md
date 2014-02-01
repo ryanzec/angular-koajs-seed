@@ -6,6 +6,8 @@ This is a seed for an AngularJS and ExpressJS application.  This setup should al
 
 Since this uses KoaJS, It requires generator support so you need to use use Node version v0.11.9+.
 
+This also generate source maps for SASS so SASS 3.3 rc2+ needs to be installed .
+
 * Download the repository
 * Make sure you have the following npm packages installed globally:
   * grunt-cli
@@ -27,12 +29,8 @@ Here is what is included so far.  As I continue to belong more with AngularJS an
 
 There are also a few of custom grunt commands included in this:
 
-* High Level Commands:
-  * build-production - Runs all required command required for building a production version of the application (building index HTML file, rewriting assets, runs unit tests, etc...)
-  * build-ui-testing -  Runs all required command required for building a UI unit testing version of the application (building index HTML file, rewriting assets, compile SASS code, etc...)
-* Low Level Commands:
-  * build - Builds production/UI unit testing versions of the index HTML file
-  * rewrite-assets - Go through the code and rewrite assets to include timestamps in the URIs to prevent caching issues
+* combine-assets - Combines configured assets together (currently only work for javascript)
+* rewrite-assets - Go through the code and rewrite assets to include timestamps in the URIs to prevent caching issues
 
 ## License ##
 

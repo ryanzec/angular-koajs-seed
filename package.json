@@ -21,13 +21,15 @@
     "grunt-contrib-jshint": "v0.8.0",
     "grunt-karma": "0.6.2",
     "grunt-complexity": "0.1.3",
+    "grunt-bowercopy": "0.7.1",
+    "grunt-shell": "0.6.4",
+    "grunt-angular-templates": "0.5.1",
     "dalekjs": "x.x.x",
     "dalek-browser-chrome": "x.x.x",
     "dalek-browser-firefox": "x.x.x",
     "grunt-timer": "0.0.4",
     "moment": "2.4.0",
-    "grunt-angular-templates": "0.5.1",
-    "lingo": "0.0.5"
+    "lingo": "0.0.5",
   },
   "engines": {
     "node": ">=0.11.9"

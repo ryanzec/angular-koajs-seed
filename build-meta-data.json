@@ -45,14 +45,6 @@
       "web/components/angular/angular.js",
       "web/components/angular-ui-router/release/angular-ui-router.js"
     ],
-    "web/app/build/libraries-ui-testing.js": [
-      "web/components/jshashes/hashes.js",
-      "web/components/moment/moment.js",
-      "web/components/jquery/jquery.js",
-      "web/components/angular/angular.js",
-      "web/components/angular-mockable-http-provider/mockable-http-provider.js",
-      "web/components/angular-ui-router/release/angular-ui-router.js"
-    ],
     "web/app/build/application.js": [
       "web/app/application.js",
       "web/app/templates.js",
@@ -60,6 +52,9 @@
       "web/app/components/core/template-interceptor.js",
       "web/app/components/home/module.js",
       "web/app/components/home/home.js"
+    ],
+    "web/app/build/ui-testing.js": [
+      "web/components/angular-mockable-http-provider/mockable-http-provider.js"
     ]
   }
 }
