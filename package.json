@@ -29,7 +29,7 @@
     "dalek-browser-firefox": "x.x.x",
     "grunt-timer": "0.0.4",
     "moment": "2.4.0",
-    "lingo": "0.0.5",
+    "lingo": "0.0.5"
   },
   "engines": {
     "node": ">=0.11.9"
