@@ -18,7 +18,6 @@ module.exports = function(grunt) {
   var globalConfig = require('./grunt/global-config');
 
   grunt.initConfig({
-    rootDirectory: __dirname,
     globalConfig: globalConfig,
     build: require('./grunt/configurations/build'),
     watch: require('./grunt/configurations/watch'),
@@ -41,7 +40,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bowercopy');
   grunt.loadNpmTasks('grunt-shell');
 
-  grunt.registerTask('bower-install', [
+  grunt.registerTask('bower', [
     'shell:bower',
     'bowercopy'
   ]);

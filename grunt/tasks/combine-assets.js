@@ -10,7 +10,7 @@ var lingo = require('lingo');
 var buildMetaData = require('../build-meta-data');
 
 module.exports = function(grunt){
-  var rootDirectory = grunt.config.get('rootDirectory');
+  var rootDirectory = path.dirname(grunt.file.findup('Gruntfile.{js,coffee}', {nocase: true}));
   buildMetaData.initialize(rootDirectory + '/build-meta-data.json');
 
   return function() {

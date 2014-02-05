@@ -23,7 +23,7 @@ var recursiveWalk = function(directory, files) {
 };
 
 module.exports = function(grunt) {
-  var rootDirectory = grunt.config.get('rootDirectory');
+  var rootDirectory = path.dirname(grunt.file.findup('Gruntfile.{js,coffee}', {nocase: true}));
 
   return function() {
     var rewriteType = this.args[0] || 'default';
