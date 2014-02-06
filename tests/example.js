@@ -9,6 +9,6 @@ describe('Beat', function(){
   }));
 
   it('should be true', function() {
-    expect(true).toEqual(true);
+    expect(true).to.be.true;
   });
 });
