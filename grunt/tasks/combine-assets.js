@@ -17,7 +17,8 @@ module.exports = function(grunt){
     //when deleting build files, lets not delete these
     var dontDeleteFiles = ['.svn', '.git', '.gitignore', '.gitkeep'];
     var combineType = this.args[0] || 'default';
-    var globalConfig = grunt.config.get('globalConfig');
+    var config = grunt.config.get('combineAssets');
+
     function buildJavascriptFiles(files, destinationFile) {
       function buildCompiledFile(files, destinationFile, originalFileName) {
         if(!buildMetaData.hasWorkingFiles() && fs.existsSync(path.dirname(destinationFile))) {
@@ -35,11 +36,11 @@ module.exports = function(grunt){
         var fileList = [];
         files.forEach(function(filePath){
           fileList.push(filePath.replace(rootDirectory + '/', ''));
-          buildMetaData.addBuildMetaDataFile(filePath, destinationFile);
+          buildMetaData.addBuildMetaDataFile(path.relative(rootDirectory, filePath), destinationFile);
         });
 
         var sourceMapFileName = originalFileName + '.map';
-        var sourceMapDestination = rootDirectory  + "/" + grunt.config.get('build').path + '/source/' + sourceMapFileName;
+        var sourceMapDestination = rootDirectory  + "/" + config.webRootPath + '/source/' + sourceMapFileName;
 
         //make sure source maps directory exists
         if(!fs.existsSync(path.dirname(sourceMapDestination))) {
@@ -66,7 +67,7 @@ module.exports = function(grunt){
         //todo: see if there is a better way to do this
         var mappingData = JSON.parse(minSource.map);
         mappingData.sources = _.map(mappingData.sources, function(path) {
-          return path.replace(globalConfig.webRoot + '/', '');
+          return path.replace(config.webRootPath + '/', '');
         });
         var mappingDataSource = JSON.stringify(mappingData);
 
@@ -107,17 +108,15 @@ module.exports = function(grunt){
       return destinationFile;
     };
 
-    console.log(grunt.config.get('build').path);
-
-    var combineAssets = grunt.config.get('build').combineAssets[lingo.camelcase(combineType.replace('-', ' '))];
+    var combineAssets = config[lingo.camelcase(combineType.replace('-', ' '))];
 
     _.forEach(combineAssets, function(item, key) {
       //add the web root directory to the file paths
       item = _.map(item, function(path) {
-        return rootDirectory + '/' + globalConfig.webRoot + '/' + path;
+        return rootDirectory + '/' + config.webRootPath + '/' + path;
       });
 
-      buildJavascriptFiles(item, globalConfig.webRoot + '/' + key);
+      buildJavascriptFiles(item, config.webRootPath + '/' + key);
     });
 
     //todo: convert to method

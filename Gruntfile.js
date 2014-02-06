@@ -19,7 +19,8 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     globalConfig: globalConfig,
-    build: require('./grunt/configurations/build'),
+    combineAssets: require('./grunt/configurations/combine-assets'),
+    rewriteAssets: require('./grunt/configurations/rewrite-assets')(grunt),
     watch: require('./grunt/configurations/watch'),
     sass: require('./grunt/configurations/sass'),
     karma: require('./grunt/configurations/karma'),
@@ -40,25 +41,27 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bowercopy');
   grunt.loadNpmTasks('grunt-shell');
 
+  //load custom tasks
+  grunt.registerTask('combine-assets', 'Combines assets files (just works with javascript files right now)', require('./grunt/tasks/combine-assets')(grunt));
+  grunt.registerTask('rewrite-assets', 'Rewrites urls for assets to prevent caching issues', require('./grunt/tasks/rewrite-assets')(grunt));
+
+  //setup shortcut tasks
   grunt.registerTask('bower', [
     'shell:bower',
     'bowercopy'
   ]);
-
   grunt.registerTask('build-development', [
     'sass',
     'ngtemplates:app',
     'combine-assets:default',
     'rewrite-assets:default'
   ]);
-
   grunt.registerTask('build-ui-testing', [
     'sass',
     'ngtemplates:app',
     'combine-assets:ui-testing',
     'rewrite-assets:ui-testing'
   ]);
-
   grunt.registerTask('build-production', [
     'jshint',
     'sass',
@@ -68,7 +71,4 @@ module.exports = function(grunt) {
     'rewrite-assets:default',
     'complexity:reference'
   ]);
-
-  grunt.registerTask('combine-assets', 'Combines assets files (just works with javascript files right now)', require('./grunt/tasks/combine-assets')(grunt));
-  grunt.registerTask('rewrite-assets', 'Rewrites urls for assets to prevent caching issues', require('./grunt/tasks/rewrite-assets')(grunt));
 };

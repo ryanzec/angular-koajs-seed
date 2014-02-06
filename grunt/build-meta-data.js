@@ -9,7 +9,6 @@ module.exports = (function() {
   var buildMetaDataFilePath = __dirname + '/build-meta-data.json';
   var currentBuildMetaData = {};
   var lastBuildMetaData = {};
-  var lastBuildFileKeys = [];
 
   var changedFilesKeys = [];
 
@@ -31,16 +30,11 @@ module.exports = (function() {
 
       if(!lastBuildMetaData['buildFiles']) {
         lastBuildMetaData['buildFiles'] = {};
-      } else {
-        lastBuildFileKeys = Object.keys(lastBuildMetaData['buildFiles']);
       }
 
       if(!currentBuildMetaData['buildFiles']) {
         currentBuildMetaData['buildFiles'] = lastBuildMetaData['buildFiles'];
       }
-
-      //todo: look at using this instead of above
-      //currentBuildMetaData = _.merge(lastBuildMetaData, currentBuildMetaData);
 
       //lets cache all the files that have changed upfront
       for(var resourcePath in lastBuildMetaData['workingFiles']) {
@@ -149,8 +143,6 @@ module.exports = (function() {
      * @param originalFileName
      */
     addBuildMetaDataFile: function(filePath, compiledFilePath) {
-      filePath = path.relative(__dirname, filePath);
-
       currentBuildMetaData['workingFiles'][filePath] = {
         //a hash of the file is probably a more accurate way of determine if the file has changed than last modified datetime
         fileHash: this.getFileHash(filePath)

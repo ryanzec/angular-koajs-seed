@@ -4,6 +4,8 @@ var colors = require('colors');
 var path = require('path');
 var _ = require('lodash');
 var moment = require('moment');
+var glob = require('glob');
+var lingo = require('lingo');
 
 var recursiveWalk = function(directory, files) {
   var files = files || [];
@@ -27,10 +29,9 @@ module.exports = function(grunt) {
 
   return function() {
     var rewriteType = this.args[0] || 'default';
-    var rewriteAssetsConfig = grunt.config.get('build').rewriteAssets;
-    var globalConfig = grunt.config.get('globalConfig');
+    var config = grunt.config.get('rewriteAssets');
 
-    if(rewriteAssetsConfig) {
+    if(config) {
       function getRewriteAssetsPath(asset, fullPath) {
         var fileStats = fs.statSync(fullPath);
         var assetParts = asset.split('/');
@@ -41,11 +42,11 @@ module.exports = function(grunt) {
         return assetParts.join('/');
       };
 
-      var rewritableAssetExtensions = _.map(rewriteAssetsConfig.fileTypes, function(item) {
+      var rewritableAssetExtensions = _.map(config.fileTypes, function(item) {
         return '.' + item;
       });
 
-      var allAssets = recursiveWalk(rootDirectory + '/' + grunt.config.get('globalConfig').webRoot);
+      var allAssets = recursiveWalk(rootDirectory + '/' + config.webRootPath);
       var rewriteAssets = [];
 
       allAssets.forEach(function(item) {
@@ -55,49 +56,43 @@ module.exports = function(grunt) {
       });
 
       var filesToProcess = [];
+      var searchFor = config[lingo.camelcase(rewriteType.replace('-', ' '))];
 
-      //todo: can we make this part of the config
-      if(rewriteType === 'default') {
-        filesToProcess = recursiveWalk(rootDirectory + '/' + grunt.config.get('globalConfig').webRoot + '/' + grunt.config.get('globalConfig').appRoot + '/' + grunt.config.get('build').buildPath);
-
-        filesToProcess.push(rootDirectory + '/' + grunt.config.get('globalConfig').webRoot + '/index.html');
-      } else if(rewriteType === 'ui-testing') {
-        filesToProcess =[rootDirectory + '/' + grunt.config.get('globalConfig').webRoot + '/index-ut.html'];
-      } else {
-        console.log(("No proper rewrite type given, use 'default' or 'ui-testing'").red);
-      }
+      searchFor.forEach(function(search) {
+        filesToProcess = filesToProcess.concat(glob.sync(search));
+      });
 
       var currentDomainKey = 0;
       var maxDomainKey;
 
-      if(_.isString(rewriteAssetsConfig.domains)) {
-        rewriteAssetsConfig.domains = [rewriteAssetsConfig.domains];
-      } else if(!_.isArray(rewriteAssetsConfig.domains)) {
-        rewriteAssetsConfig.domains = [];
+      if(_.isString(config.domains)) {
+        config.domains = [config.domains];
+      } else if(!_.isArray(config.domains)) {
+        config.domains = [];
       }
 
-      maxDomainKey = rewriteAssetsConfig.domains.length - 1;
+      maxDomainKey = config.domains.length - 1;
 
       filesToProcess.forEach(function(file) {
         var fileContents = fs.readFileSync(file, 'ascii');
 
         rewriteAssets.forEach(function(asset) {
           var fullPath = asset;
-          asset = asset.replace(rootDirectory + '/' + grunt.config.get('globalConfig').webRoot + '/', '');
+          asset = asset.replace(rootDirectory + '/' + config.webRootPath + '/', '');
 
           var regex = new RegExp('((http[s]?:)?//[a-zA-Z0-9-_.]*.[a-zA-Z0-9-_]*.[a-zA-Z0-9-_]{2,6})?/?((static/[0-9]*/)+)?' + asset, 'g');
           var rewrittenPath = getRewriteAssetsPath(asset, fullPath);
 
           //see if we should set the full url or just leave it as a relative path
-          if(rewriteAssetsConfig.domains.length > 0) {
-            rewrittenPath = rewriteAssetsConfig.domains[currentDomainKey] + '/' + rewrittenPath;
+          if(config.domains.length > 0) {
+            rewrittenPath = config.domains[currentDomainKey] + '/' + rewrittenPath;
 
             if(maxDomainKey > 0 && currentDomainKey >= maxDomainKey) {
               currentDomainKey = 0;
             } else if(maxDomainKey > 0 && _.isArray(fileContents.match(regex))) {
               currentDomainKey += 1;
             }
-          } else if(rewriteAssetsConfig.prependSlash !== false) {
+          } else if(config.prependSlash !== false) {
             rewrittenPath = '/' + rewrittenPath;
           }
 
