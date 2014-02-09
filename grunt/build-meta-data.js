@@ -82,7 +82,10 @@ module.exports = (function() {
       }
 
       for(var file in files) {
-        if(!lastBuildMetaData['buildFiles'][originalFileName] || lastBuildMetaData['buildFiles'][originalFileName].indexOf(path.relative(__dirname, files[file])) === -1) {
+        if(
+        !lastBuildMetaData['buildFiles'][originalFileName] ||
+        lastBuildMetaData['buildFiles'][originalFileName].indexOf(path.relative(path.dirname(buildMetaDataFilePath), files[file])) === -1
+        ) {
           hasSameFiles = false;
         }
       }
