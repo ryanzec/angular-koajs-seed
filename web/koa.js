@@ -12,6 +12,8 @@ function readFile(file) {
 }
 
 app.use(function *() {
+  var isHtmlFileRequest = this.path.substr(-5) === '.html';
+  var filePath = this.path.substr(1);
   var rootDirectory = this.path.split('/')[1];
   var validRootDirectories = [
     'app',
@@ -20,10 +22,14 @@ app.use(function *() {
     'source'
   ];
 
-  if(validRootDirectories.indexOf(rootDirectory) !== -1) {
-    //determine the asset to send
-    var filePath = this.path.substr(1);
-
+  //enable this if you want to be able to serve different version of html files
+  //useful if users have different view into you application based on permission or maybe what features they have purchased
+  //but you can't used when using ngtemplates grunt task (the generated templates.js file)
+  /*if(isHtmlFileRequest) {
+    yield send(this, filePath, {
+      root: __dirname
+    });
+  } else */if(validRootDirectories.indexOf(rootDirectory) !== -1) {
     //rewrite file path for static based URIs
     if(filePath.substr(0, 6) === 'static') {
       filePath = filePath.split('/').splice(2).join('/')
