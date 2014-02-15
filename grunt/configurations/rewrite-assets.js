@@ -11,10 +11,16 @@ module.exports = function(grunt) {
     default: [
       '<%= globalConfig.webRoot %>/index.html',
       '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/<%= globalConfig.buildPath %>/**/*'
+      //add these is you wish to serve html from KoaJS
+      //'<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/app/**/*.html',
+      //'<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/components/**/*.html'
     ],
     uiTesting: [
       '<%= globalConfig.webRoot %>/index-ut.html',
       '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/<%= globalConfig.buildPath %>/**/*'
+      //add these is you wish to serve html from KoaJS
+      //'<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/app/**/*.html',
+      //'<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/components/**/*.html'
     ]
     //use multiple domains
     /*domains: [
