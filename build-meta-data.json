@@ -35,13 +35,16 @@
     },
     "web/components/angular-mockable-http-provider/mockable-http-provider.js": {
       "fileHash": "65ac2013e631c2c1e924122f063398c9558d9de3"
+    },
+    "web/components/jquery/dist/jquery.js": {
+      "fileHash": "0fe3e567e0776226ee98326ba8cae7680683c112"
     }
   },
   "buildFiles": {
     "web/app/build/libraries.js": [
       "web/components/jshashes/hashes.js",
       "web/components/moment/moment.js",
-      "web/components/jquery/jquery.js",
+      "web/components/jquery/dist/jquery.js",
       "web/components/angular/angular.js",
       "web/components/angular-ui-router/release/angular-ui-router.js"
     ],
