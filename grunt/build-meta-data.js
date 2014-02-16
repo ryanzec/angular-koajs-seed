@@ -57,9 +57,11 @@ module.exports = (function() {
      * @param files
      * @returns {*}
      */
-    hasChangedFile: function(files) {
+    hasChangedFile: function(files, relativeDirectoryPath) {
+      relativeDirectoryPath = relativeDirectoryPath || __dirname;
+
       for(var file in files) {
-        if(changedFilesKeys.indexOf(path.relative(__dirname, files[file])) !== -1) {
+        if(changedFilesKeys.indexOf(path.relative(relativeDirectoryPath, files[file])) !== -1) {
           return true;
         }
       }

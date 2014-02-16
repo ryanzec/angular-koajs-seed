@@ -79,7 +79,7 @@ module.exports = function(grunt){
 
       var source;
       var originalFileName = path.basename(destinationFile);
-      var changedFile = buildMetaData.hasChangedFile(files);
+      var changedFile = buildMetaData.hasChangedFile(files, rootDirectory);
       var compiledFiles = buildMetaData.getCompiledFiles(files);
 
       //invalidate the compile files if the files have changed
