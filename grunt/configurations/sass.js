@@ -4,8 +4,8 @@ module.exports = {
       sourcemap: true
     },
     files: {
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/styles/main.css': [
-        '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/styles/main.scss'
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/styles/main.css': [
+        '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/styles/main.scss'
       ]
     }
   }

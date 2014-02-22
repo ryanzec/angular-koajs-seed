@@ -2,10 +2,10 @@ module.exports = {
   //these value should ensure no error as these settings are just for reference (to compare maintainability of the difference piece of code)
   reference: {
     src: [
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/application.js',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/misc/**/*.js',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/components/**/*.js',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/models/**/*.js'
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/application.js',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/misc/**/*.js',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/components/**/*.js',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/models/**/*.js'
     ],
     options: {
       cyclomatic: 10,
@@ -15,10 +15,10 @@ module.exports = {
   },
   defaults: {
     src: [
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/application.js',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/misc/**/*.js',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/components/**/*.js',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/models/**/*.js'
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/application.js',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/misc/**/*.js',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/components/**/*.js',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/models/**/*.js'
     ]
   }
 };

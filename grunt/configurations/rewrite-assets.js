@@ -1,26 +1,21 @@
-var librariesCombineFiles = require('../libraries-combine-files');
-var uiTestingCombineFiles = require('../ui-testing-combine-files');
-var applicationCombineFiles = require('../application-combine-files');
-
 module.exports = function(grunt) {
   return {
-    webRootPath: '<%= globalConfig.webRoot %>',
-    appRootPath: 'app',
+    webPath: '<%= globalConfig.webPath %>',
     fileTypes: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css'],
     prependSlash: true,
     default: [
-      '<%= globalConfig.webRoot %>/index.html',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/<%= globalConfig.buildPath %>/**/*'
+      '<%= globalConfig.webPath %>/index.html',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/<%= globalConfig.buildPath %>/**/*'
       //add these is you wish to serve html from KoaJS
-      //'<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/app/**/*.html',
-      //'<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/components/**/*.html'
+      //'<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/app/**/*.html',
+      //'<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/components/**/*.html'
     ],
     uiTesting: [
-      '<%= globalConfig.webRoot %>/index-ut.html',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/<%= globalConfig.buildPath %>/**/*'
+      '<%= globalConfig.webPath %>/index-ut.html',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/<%= globalConfig.buildPath %>/**/*'
       //add these is you wish to serve html from KoaJS
-      //'<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/app/**/*.html',
-      //'<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/components/**/*.html'
+      //'<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/app/**/*.html',
+      //'<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/components/**/*.html'
     ]
     //use multiple domains
     /*domains: [

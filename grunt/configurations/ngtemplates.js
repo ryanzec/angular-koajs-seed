@@ -3,14 +3,15 @@ var globalConfig = require('../global-config');
 module.exports = {
   app: {
     src: [
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/**/*.html'
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>//**/*.html',
+      '<%= globalConfig.webPath %>/components/nucleus-angular*/assets/templates/**/*.html',
     ],
-    dest: '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/templates.js',
+    dest: '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/templates.js',
     options: {
       module: 'app',
       url: function(a) {
-        console.log(a.replace(globalConfig.webRoot + '/', ''));
-        return a.replace(globalConfig.webRoot + '/', '');
+        console.log(a.replace(globalConfig.webPath + '/', ''));
+        return a.replace(globalConfig.webPath + '/', '');
       },
       htmlmin: {
         collapseBooleanAttributes: true,

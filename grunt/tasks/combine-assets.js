@@ -7,11 +7,9 @@ var path = require('path');
 var rimraf = require('rimraf');
 var _ = require('lodash');
 var lingo = require('lingo');
-var buildMetaData = require('../build-meta-data');
 
-module.exports = function(grunt){
+module.exports = function(grunt, buildMetaData){
   var rootDirectory = path.dirname(grunt.file.findup('Gruntfile.{js,coffee}', {nocase: true}));
-  buildMetaData.initialize(rootDirectory + '/build-meta-data.json');
 
   return function() {
     //when deleting build files, lets not delete these
@@ -40,7 +38,7 @@ module.exports = function(grunt){
         });
 
         var sourceMapFileName = originalFileName + '.map';
-        var sourceMapDestination = rootDirectory  + "/" + config.webRootPath + '/source/' + sourceMapFileName;
+        var sourceMapDestination = rootDirectory  + "/" + config.webPath + '/source/' + sourceMapFileName;
 
         //make sure source maps directory exists
         if(!fs.existsSync(path.dirname(sourceMapDestination))) {
@@ -67,7 +65,7 @@ module.exports = function(grunt){
         //todo: see if there is a better way to do this
         var mappingData = JSON.parse(minSource.map);
         mappingData.sources = _.map(mappingData.sources, function(path) {
-          return path.replace(config.webRootPath + '/', '');
+          return path.replace(config.webPath + '/', '');
         });
         var mappingDataSource = JSON.stringify(mappingData);
 
@@ -113,13 +111,12 @@ module.exports = function(grunt){
     _.forEach(combineAssets, function(item, key) {
       //add the web root directory to the file paths
       item = _.map(item, function(path) {
-        return rootDirectory + '/' + config.webRootPath + '/' + path;
+        return rootDirectory + '/' + config.webPath + '/' + path;
       });
 
-      buildJavascriptFiles(item, config.webRootPath + '/' + key);
+      buildJavascriptFiles(item, config.webPath + '/' + key);
     });
 
-    //todo: convert to method
     buildMetaData.writeFile();
   }
 };

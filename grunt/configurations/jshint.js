@@ -1,10 +1,10 @@
 module.exports = {
   all: {
     src: [
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/application.js',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/misc/**/*.js',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/components/**/*.js',
-      '<%= globalConfig.webRoot %>/<%= globalConfig.appRoot %>/models/**/*.js'
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/application.js',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/misc/**/*.js',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/components/**/*.js',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/models/**/*.js'
     ],
     options: {
       bitwise: true, //prevent bitwise operations as they're usually not needed
@@ -36,7 +36,7 @@ module.exports = {
       eqnull: false, //we want to show warnings where we have == null to make it more defined to prevent weird things from happening
       esnext: false, //we are not using ES6 code
       evil: false, //we should not be using eval
-      expr: false, //we want to should warning where we have expressions and are expecting assignments/function calls
+      expr: true, //this will causes warning for our tests if set to false
       funcscope: true, //we can declare variable anywhere we want, I don't think there is any real disadvantage (and ES6 is getting block level scope)
       globalstrict: true, //not sure what this is so let not worry about it
       iterator: false, //__iterator__ is not available in all browsers so it should not be used

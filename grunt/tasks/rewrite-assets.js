@@ -24,7 +24,7 @@ var recursiveWalk = function(directory, files) {
   return files;
 };
 
-module.exports = function(grunt) {
+module.exports = function(grunt, buildMetaData) {
   var rootDirectory = path.dirname(grunt.file.findup('Gruntfile.{js,coffee}', {nocase: true}));
 
   return function() {
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
         return '.' + item;
       });
 
-      var allAssets = recursiveWalk(rootDirectory + '/' + config.webRootPath);
+      var allAssets = recursiveWalk(rootDirectory + '/' + config.webPath);
       var rewriteAssets = [];
 
       allAssets.forEach(function(item) {
@@ -61,6 +61,17 @@ module.exports = function(grunt) {
       searchFor.forEach(function(search) {
         filesToProcess = filesToProcess.concat(glob.sync(search));
       });
+
+      //eliminate files that have not changed
+      var changeFiles =[];
+      filesToProcess.forEach(function(file) {
+        if(buildMetaData.hasChangedFile([file], rootDirectory) === true) {
+          changeFiles.push(file);
+          buildMetaData.addBuildMetaDataFile(file);
+        }
+      });
+      buildMetaData.writeFile();
+      filesToProcess = changeFiles;
 
       var currentDomainKey = 0;
       var maxDomainKey;
@@ -78,7 +89,7 @@ module.exports = function(grunt) {
 
         rewriteAssets.forEach(function(asset) {
           var fullPath = asset;
-          asset = asset.replace(rootDirectory + '/' + config.webRootPath + '/', '');
+          asset = asset.replace(rootDirectory + '/' + config.webPath + '/', '');
 
           var regex = new RegExp('((http[s]?:)?//[a-zA-Z0-9-_.]*.[a-zA-Z0-9-_]*.[a-zA-Z0-9-_]{2,6})?/?((static/[0-9]*/)+)?' + asset, 'g');
           var rewrittenPath = getRewriteAssetsPath(asset, fullPath);

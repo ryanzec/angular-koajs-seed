@@ -16,6 +16,7 @@ var lingo = require('lingo');
 module.exports = function(grunt) {
   timer.init(grunt);
   var globalConfig = require('./grunt/global-config');
+  var buildTools = require('./grunt/tasks/build-tools')(grunt);
 
   grunt.initConfig({
     globalConfig: globalConfig,
@@ -42,8 +43,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
 
   //load custom tasks
-  grunt.registerTask('combine-assets', 'Combines assets files (just works with javascript files right now)', require('./grunt/tasks/combine-assets')(grunt));
-  grunt.registerTask('rewrite-assets', 'Rewrites urls for assets to prevent caching issues', require('./grunt/tasks/rewrite-assets')(grunt));
+  grunt.registerTask('combine-assets', 'Combines assets files (just works with javascript files right now)', buildTools.combineAssets);
+  grunt.registerTask('rewrite-assets', 'Rewrites urls for assets to prevent caching issues', buildTools.rewriteAssets);
 
   //setup shortcut tasks
   grunt.registerTask('bower', [

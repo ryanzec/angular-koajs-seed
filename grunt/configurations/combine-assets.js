@@ -2,9 +2,9 @@ var librariesCombineFiles = require('../libraries-combine-files');
 var uiTestingCombineFiles = require('../ui-testing-combine-files');
 var applicationCombineFiles = require('../application-combine-files');
 
+//todo: look at replace app with globalConfig
 module.exports = {
-  webRootPath: '<%= globalConfig.webRoot %>',
-  buildPath: 'build',
+  webPath: '<%= globalConfig.webPath %>',
   default: {
     'app/build/libraries.js': librariesCombineFiles,
     'app/build/application.js': applicationCombineFiles

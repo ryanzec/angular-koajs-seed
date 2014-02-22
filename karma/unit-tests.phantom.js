@@ -7,7 +7,7 @@ module.exports = function(config) {
     singleRun: true,
     files: [
       'web/components/moment/moment.js',
-      'web/components/jquery/jquery.js',
+      'web/components/jquery/dist/jquery.js',
       'web/components/angular/angular.js',
       'web/components/angular-mocks/angular-mocks.js',
       'web/components/angular-ui-router/release/angular-ui-router.js',

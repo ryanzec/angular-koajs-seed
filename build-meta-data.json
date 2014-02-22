@@ -6,7 +6,7 @@
     "web/components/moment/moment.js": {
       "fileHash": "81183ce4749d3c03bb39dc505d8971ac9fa49aad"
     },
-    "web/components/jquery/jquery.js": {
+    "web/components/jquery/dist/jquery.js": {
       "fileHash": "0fe3e567e0776226ee98326ba8cae7680683c112"
     },
     "web/components/angular/angular.js": {
@@ -36,8 +36,17 @@
     "web/components/angular-mockable-http-provider/mockable-http-provider.js": {
       "fileHash": "65ac2013e631c2c1e924122f063398c9558d9de3"
     },
-    "web/components/jquery/dist/jquery.js": {
-      "fileHash": "0fe3e567e0776226ee98326ba8cae7680683c112"
+    "web/app/build/application.js": {
+      "fileHash": "4e94cbef4845dae55e9524ea218f827ed737be6f"
+    },
+    "web/app/build/libraries.js": {
+      "fileHash": "fd523085eb35fc7cb0ea421e4aec5def0f4d9624"
+    },
+    "web/app/build/ui-testing.js": {
+      "fileHash": "03acc52ac5b63e1c443017cbedc7fe8ae000c6a2"
+    },
+    "web/index-ut.html": {
+      "fileHash": "6088b563b75b93fc6f9cb220d863ea02003e9810"
     }
   },
   "buildFiles": {

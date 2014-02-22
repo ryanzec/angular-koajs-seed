@@ -1,3 +1,4 @@
+.DS_Store
 .idea
 bower_components/*
 node_modules/*
@@ -6,3 +7,4 @@ web/.sass-cache/*
 web/components/*
 *.css.map
 *.js.map
+docs/*
