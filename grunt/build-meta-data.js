@@ -15,6 +15,11 @@ module.exports = (function() {
     var buildMetaDataObject = {
       initialize: function(metaDataFilePath){
         buildMetaDataFilePath = metaDataFilePath;
+        this.updateFromFile();
+      },
+
+      updateFromFile: function() {
+        changedFilesKeys = [];
 
         if(fs.existsSync(buildMetaDataFilePath)) {
           lastBuildMetaData = JSON.parse(fs.readFileSync(buildMetaDataFilePath, 'ascii'));
@@ -45,8 +50,6 @@ module.exports = (function() {
             changedFilesKeys.push(resourcePath);
           }
         }
-
-        //console.log(changedFilesKeys);
       },
 
       invalidateBuildFile: function(file) {

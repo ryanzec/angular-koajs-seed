@@ -4,7 +4,6 @@ var colors = require('colors');
 var path = require('path');
 var _ = require('lodash');
 var moment = require('moment');
-var glob = require('glob');
 var lingo = require('lingo');
 
 var recursiveWalk = function(directory, files) {
@@ -28,6 +27,7 @@ module.exports = function(grunt, buildMetaData) {
   var rootDirectory = path.dirname(grunt.file.findup('Gruntfile.{js,coffee}', {nocase: true}));
 
   return function() {
+    buildMetaData.updateFromFile();
     var rewriteType = this.args[0] || 'default';
     var config = grunt.config.get('rewriteAssets');
 
@@ -65,12 +65,10 @@ module.exports = function(grunt, buildMetaData) {
       //eliminate files that have not changed
       var changeFiles =[];
       filesToProcess.forEach(function(file) {
-        if(buildMetaData.hasChangedFile([file], rootDirectory) === true) {
+        if(buildMetaData.hasChangedFile([file], rootDirectory) === true || config.alwaysRewrite.indexOf(file) !== -1) {
           changeFiles.push(file);
-          buildMetaData.addBuildMetaDataFile(file);
         }
       });
-      buildMetaData.writeFile();
       filesToProcess = changeFiles;
 
       var currentDomainKey = 0;
@@ -112,7 +110,10 @@ module.exports = function(grunt, buildMetaData) {
 
         console.log(('rewriting assets in ' + file).green);
         fs.writeFileSync(file, fileContents, 'ascii');
+        buildMetaData.addBuildMetaDataFile(file);
       });
+
+      buildMetaData.writeFile();
     }
   }
 };

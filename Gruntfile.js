@@ -57,12 +57,6 @@ module.exports = function(grunt) {
     'combine-assets:default',
     'rewrite-assets:default'
   ]);
-  grunt.registerTask('build-ui-testing', [
-    'sass',
-    'ngtemplates:app',
-    'combine-assets:ui-testing',
-    'rewrite-assets:ui-testing'
-  ]);
   grunt.registerTask('build-production', [
     'jshint',
     'sass',

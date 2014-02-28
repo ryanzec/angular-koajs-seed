@@ -12,6 +12,7 @@ module.exports = function(grunt, buildMetaData){
   var rootDirectory = path.dirname(grunt.file.findup('Gruntfile.{js,coffee}', {nocase: true}));
 
   return function() {
+    buildMetaData.updateFromFile();
     //when deleting build files, lets not delete these
     var dontDeleteFiles = ['.svn', '.git', '.gitignore', '.gitkeep'];
     var combineType = this.args[0] || 'default';

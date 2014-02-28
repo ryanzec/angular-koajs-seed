@@ -7,10 +7,6 @@ module.exports = {
   webPath: '<%= globalConfig.webPath %>',
   default: {
     'app/build/libraries.js': librariesCombineFiles,
-    'app/build/application.js': applicationCombineFiles
-  },
-  uiTesting: {
-    'app/build/libraries.js': librariesCombineFiles,
     'app/build/application.js': applicationCombineFiles,
     'app/build/ui-testing.js': uiTestingCombineFiles
   }
