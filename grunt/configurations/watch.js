@@ -1,12 +1,37 @@
 module.exports = {
-  buildDevelopment: {
+  sass: {
     files: [
-      '*.*',
-      'web/app/**/*.*',
-      'web/components/**/*.*',
-      'web/index-builder.html'
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/**/*.scss',
+      '<%= globalConfig.webPath %>/components/**/*.scss'
     ],
-    tasks: ['build-development'],
+    tasks: [
+      'sass',
+      'rewrite-assets:default'
+    ],
+    options: {
+      nospawn: true
+    }
+  },
+  javascript: {
+    files: [
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/**/*.js',
+      '<%= globalConfig.webPath %>/components/**/*.js'
+    ],
+    tasks: [
+      'combine-assets:default',
+      'rewrite-assets:default'
+    ],
+    options: {
+      nospawn: true
+    }
+  },
+  html: {
+    files: [
+      '<%= globalConfig.webPath %>/**/*.html'
+    ],
+    tasks: [
+      'rewrite-assets:default'
+    ],
     options: {
       nospawn: true
     }
