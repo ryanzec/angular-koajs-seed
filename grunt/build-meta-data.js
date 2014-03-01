@@ -88,10 +88,12 @@ module.exports = (function() {
       hasSameFiles: function(originalFileName, files) {
         var hasSameFiles;
 
+        //if we don't have the file list, it does not have the same files
         if(!lastBuildMetaData['buildFiles'] || !lastBuildMetaData['buildFiles'][originalFileName]) {
           hasSameFiles = false;
         }
 
+        //make sure all the files are currently being included
         for(var file in files) {
           if(
           !lastBuildMetaData['buildFiles'][originalFileName] ||
@@ -101,6 +103,7 @@ module.exports = (function() {
           }
         }
 
+        //this will check to see if there are new files or removed files
         if(hasSameFiles !== false) {
           hasSameFiles = files.length === lastBuildMetaData['buildFiles'][originalFileName].length;
         }
@@ -147,6 +150,10 @@ module.exports = (function() {
         } else {
           return false;
         }
+      },
+
+      resetCompiledFileList: function(compiledFilePath) {
+        currentBuildMetaData['buildFiles'][compiledFilePath] = [];
       },
 
       /**

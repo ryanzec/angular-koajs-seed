@@ -18,7 +18,7 @@ module.exports = function(grunt, buildMetaData){
     var combineType = this.args[0] || 'default';
     var config = grunt.config.get('combineAssets');
 
-    function buildJavascriptFiles(files, destinationFile) {
+    function buildJavascriptFiles(files, destinationFile, excludeList) {
       function buildCompiledFile(files, destinationFile, originalFileName) {
         if(!buildMetaData.hasWorkingFiles() && fs.existsSync(path.dirname(destinationFile))) {
           var items = fs.readdirSync(path.dirname(destinationFile));
@@ -30,6 +30,8 @@ module.exports = function(grunt, buildMetaData){
             }
           }
         }
+
+        buildMetaData.resetCompiledFileList(destinationFile);
 
         //need to update the build meta data
         var fileList = [];
@@ -76,6 +78,28 @@ module.exports = function(grunt, buildMetaData){
         fs.appendFileSync(sourceMapDestination, mappingDataSource, 'ascii');
       };
 
+      //do a glob search for all the files
+      var fileMatches = [];
+
+      files.forEach(function(search) {
+        fileMatches = fileMatches.concat(glob.sync(search));
+      });
+
+      files = fileMatches;
+
+      //do a glob search for all the files
+      var excludeMatches = [];
+
+      excludeList.forEach(function(search) {
+        excludeMatches = excludeMatches.concat(glob.sync(search));
+      });
+
+      excludeList = excludeMatches;
+
+      files = _.filter(files, function(file) {
+        return excludeList.indexOf(file) === -1;
+      });
+
       var source;
       var originalFileName = path.basename(destinationFile);
       var changedFile = buildMetaData.hasChangedFile(files, rootDirectory);
@@ -111,11 +135,15 @@ module.exports = function(grunt, buildMetaData){
 
     _.forEach(combineAssets, function(item, key) {
       //add the web root directory to the file paths
-      item = _.map(item, function(path) {
+      var excludeList = item.excludeList || [];
+      var files = _.map(item.files, function(path) {
         return rootDirectory + '/' + config.webPath + '/' + path;
       });
-
-      buildJavascriptFiles(item, config.webPath + '/' + key);
+      excludeList = _.map(excludeList, function(path) {
+        return rootDirectory + '/' + config.webPath + '/' + path;
+      });
+      
+      buildJavascriptFiles(files, config.webPath + '/' + key, excludeList);
     });
 
     buildMetaData.writeFile();
