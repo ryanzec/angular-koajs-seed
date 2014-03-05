@@ -4,13 +4,11 @@ module.exports = function(grunt) {
     fileTypes: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css'],
     prependSlash: true,
     alwaysRewrite: [
-      '<%= globalConfig.webPath %>/index.html',
-      '<%= globalConfig.webPath %>/index-ut.html'
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/<%= globalConfig.buildPath %>/index.html',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/<%= globalConfig.buildPath %>/index-ut.html'
     ],
     default: [
-      '<%= globalConfig.webPath %>/index.html',
-      '<%= globalConfig.webPath %>/index-ut.html',
-      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/<%= globalConfig.buildPath %>/**/*'
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/<%= globalConfig.buildPath %>/**/*.*'
       //add these is you wish to serve html from KoaJS
       //'<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/app/**/*.html',
       //'<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/components/**/*.html'

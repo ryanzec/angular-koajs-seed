@@ -31,6 +31,7 @@ There are also a few of custom grunt commands included in this:
 
 * combine-assets - Combines configured assets together (currently only work for javascript)
 * rewrite-assets - Go through the code and rewrite assets to include timestamps in the URIs to prevent caching issues
+* html-minifier - Copies and minifys html files
 
 ## License ##
 

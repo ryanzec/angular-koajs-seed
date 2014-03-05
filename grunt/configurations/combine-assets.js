@@ -6,8 +6,14 @@ var applicationCombineFiles = require('../application-combine-files');
 module.exports = {
   webPath: '<%= globalConfig.webPath %>',
   default: {
-    'app/build/libraries.js': librariesCombineFiles,
-    'app/build/application.js': applicationCombineFiles,
-    'app/build/ui-testing.js': uiTestingCombineFiles
+    'app/build/libraries.js': {
+      files: librariesCombineFiles
+    },
+    'app/build/application.js': {
+      files: applicationCombineFiles
+    },
+    'app/build/ui-testing.js': {
+      files: uiTestingCombineFiles
+    }
   }
 };

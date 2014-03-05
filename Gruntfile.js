@@ -1,17 +1,4 @@
-var fs = require('fs');
-var glob = require('glob');
-var exec = require('child_process').exec;
-var sys = require('sys');
-var colors = require('colors');
-var uglifyjs = require('uglify-js');
-var mkdirp = require('mkdirp');
-var path = require('path');
-var rimraf = require('rimraf');
-var crypto = require('crypto');
-var _ = require('lodash');
 var timer = require("grunt-timer");
-var moment = require('moment');
-var lingo = require('lingo');
 
 module.exports = function(grunt) {
   timer.init(grunt);
@@ -29,7 +16,8 @@ module.exports = function(grunt) {
     jshint: require('./grunt/configurations/jshint'),
     ngtemplates: require('./grunt/configurations/ngtemplates'),
     bowercopy: require('./grunt/configurations/bowercopy'),
-    shell: require('./grunt/configurations/shell')
+    shell: require('./grunt/configurations/shell'),
+    htmlMinifier: require('./grunt/configurations/html-minifier')
   });
 
   //load grunt plugins
@@ -45,6 +33,7 @@ module.exports = function(grunt) {
   //load custom tasks
   grunt.registerTask('combine-assets', 'Combines assets files (just works with javascript files right now)', buildTools.combineAssets);
   grunt.registerTask('rewrite-assets', 'Rewrites urls for assets to prevent caching issues', buildTools.rewriteAssets);
+  grunt.registerTask('html-minifier', 'Minifies HTML files', buildTools.htmlMinifier);
 
   //setup shortcut tasks
   grunt.registerTask('bower', [
@@ -53,7 +42,9 @@ module.exports = function(grunt) {
   ]);
   grunt.registerTask('build-development', [
     'sass',
-    'ngtemplates:app',
+    //add this in if you wish to serve pre-compiled template files
+    //'ngtemplates:app',
+    'html-minifier:default',
     'combine-assets:default',
     'rewrite-assets:default'
   ]);
@@ -61,7 +52,9 @@ module.exports = function(grunt) {
     'jshint',
     'sass',
     'karma',
-    'ngtemplates:app',
+    //add this in if you wish to serve pre-compiled template files
+    //'ngtemplates:app',
+    'html-minifier:default',
     'combine-assets:default',
     'rewrite-assets:default',
     'complexity:reference'

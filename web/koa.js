@@ -15,6 +15,7 @@ app.use(function *() {
   var isHtmlFileRequest = this.path.substr(-5) === '.html';
   var filePath = this.path.substr(1);
   var rootDirectory = this.path.split('/')[1];
+  var buildPath = 'app/build';
   var validRootDirectories = [
     'app',
     'components',
@@ -22,14 +23,13 @@ app.use(function *() {
     'source'
   ];
 
-  //enable this if you want to be able to serve different version of html files
-  //useful if users have different view into you application based on permission or maybe what features they have purchased
-  //but you can't used when using ngtemplates grunt task (the generated templates.js file)
-  /*if(isHtmlFileRequest) {
-    yield send(this, filePath, {
+  //you can remove this first part of this if statement and use the ngtemplate grunt tasks if you perfer to compile all your template beforehand
+  if(isHtmlFileRequest) {
+    //serve the build version of the html which is compressed
+    yield send(this, buildPath + '/' + filePath, {
       root: __dirname
     });
-  } else */if(validRootDirectories.indexOf(rootDirectory) !== -1) {
+  } else if(validRootDirectories.indexOf(rootDirectory) !== -1) {
     //rewrite file path for static based URIs
     if(filePath.substr(0, 6) === 'static') {
       filePath = filePath.split('/').splice(2).join('/')
@@ -47,7 +47,7 @@ app.use(function *() {
     }
 
     //pull in the html and load add it to the response
-    var indexHtml = yield readFile(indexFile);
+    var indexHtml = yield readFile(buildPath + '/' + indexFile);
     this.body = indexHtml;
   }
 });

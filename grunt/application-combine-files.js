@@ -1,8 +1,8 @@
 module.exports = [
   'app/application.js',
   
-  //comment this file out if you plane to serve html file through KoaJS
-  'app/templates.js',
+  //add this in if you wish to serve pre-compiled template files
+  //'app/templates.js',
 
   'app/components/core/module.js',
   'app/components/core/template-interceptor.js',

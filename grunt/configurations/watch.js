@@ -27,9 +27,11 @@ module.exports = {
   },
   html: {
     files: [
-      '<%= globalConfig.webPath %>/**/*.html'
+      '<%= globalConfig.webPath %>/*.html',
+      '<%= globalConfig.webPath %>/<%= globalConfig.appPath %>/components/**/*.html'
     ],
     tasks: [
+      'html-minifier:default',
       'rewrite-assets:default'
     ],
     options: {

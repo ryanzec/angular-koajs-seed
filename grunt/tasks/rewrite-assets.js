@@ -83,6 +83,13 @@ module.exports = function(grunt, buildMetaData) {
       maxDomainKey = config.domains.length - 1;
 
       filesToProcess.forEach(function(file) {
+        //only process files
+        var fileStats = fs.statSync(file)
+        
+        if(fileStats.isFile() !== true) {
+          return;
+        }
+
         var fileContents = fs.readFileSync(file, 'ascii');
 
         rewriteAssets.forEach(function(asset) {

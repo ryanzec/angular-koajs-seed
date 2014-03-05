@@ -7,6 +7,7 @@ module.exports = function(grunt){
   
   return {
     combineAssets: require('./combine-assets')(grunt, buildMetaData),
-    rewriteAssets: require('./rewrite-assets')(grunt, buildMetaData)
+    rewriteAssets: require('./rewrite-assets')(grunt, buildMetaData),
+    htmlMinifier: require('./html-minifier')(grunt, buildMetaData)
   };
 };

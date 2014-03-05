@@ -20,17 +20,6 @@ module.exports = function(grunt, buildMetaData){
 
     function buildJavascriptFiles(files, destinationFile, excludeList) {
       function buildCompiledFile(files, destinationFile, originalFileName) {
-        if(!buildMetaData.hasWorkingFiles() && fs.existsSync(path.dirname(destinationFile))) {
-          var items = fs.readdirSync(path.dirname(destinationFile));
-
-          for(var z = 0; z < items.length; z += 1) {
-            if(dontDeleteFiles.indexOf(items[z]) === -1) {
-              console.log(('removing file ' + path.dirname(destinationFile) + '/' + items[z]).yellow);
-              rimraf.sync(path.dirname(destinationFile) + '/' + items[z]);
-            }
-          }
-        }
-
         buildMetaData.resetCompiledFileList(destinationFile);
 
         //need to update the build meta data
@@ -47,6 +36,7 @@ module.exports = function(grunt, buildMetaData){
         if(!fs.existsSync(path.dirname(sourceMapDestination))) {
           mkdirp.sync(path.dirname(sourceMapDestination));
         } else {
+          console.log(('removing file ' + sourceMapDestination).yellow);
           rimraf.sync(sourceMapDestination);
         }
 
