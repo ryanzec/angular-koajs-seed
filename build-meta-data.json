@@ -64,19 +64,22 @@
       "fileHash": "ba2cfcf65d59e72cca0a2497db1cde865415bfc4"
     },
     "web/app/build/application.js": {
-      "fileHash": "1b6e89275b6aa58dd5bf15433ef757202e8b6c3e"
+      "fileHash": "c3dc1fc11f5808224b35da6ca80a0ee818a01306"
     },
     "web/app/build/index-ut.html": {
-      "fileHash": "d2a7e5e671a9afee8dfbd76214066df2d2c57c63"
+      "fileHash": "ef15e31e05e5bbd81922fb264a565a142b446aa2"
     },
     "web/app/build/index.html": {
-      "fileHash": "6ebc9625db7e67385cc63297c2ae9b519b89c6c1"
+      "fileHash": "609cc026271a09c4e17b482847ddb7e1d52b04a1"
     },
     "web/app/build/libraries.js": {
       "fileHash": "fd523085eb35fc7cb0ea421e4aec5def0f4d9624"
     },
     "web/app/build/ui-testing.js": {
       "fileHash": "9c3fb800102aa2d1b1c5c2fcf509bb47a08e064f"
+    },
+    "web/app/components/home/home-controller.js": {
+      "fileHash": "037ffd1736661a846fb6c1c1a909e7bec49194d0"
     }
   },
   "buildFiles": {
@@ -92,7 +95,7 @@
       "web/app/components/core/module.js",
       "web/app/components/core/template-interceptor.js",
       "web/app/components/home/module.js",
-      "web/app/components/home/home.js"
+      "web/app/components/home/home-controller.js"
     ],
     "web/app/build/ui-testing.js": [
       "web/components/angular-mockable-http-provider/mockable-http-provider.js"
