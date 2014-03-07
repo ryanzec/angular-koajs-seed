@@ -1,6 +1,7 @@
 {
   "name": "angular-koajs-seed",
-  "version": "0.1.0",
+  "private": true,
+  "version": "0.5.0",
   "dependencies": {
     "koa": "0.2.1",
     "koa-send": "1.2.2"
@@ -34,7 +35,8 @@
     "karma-chai": "0.0.2",
     "mocha": "1.17.1",
     "sinon": "1.8.1",
-    "karma-sinon": "1.0.2"
+    "karma-sinon": "1.0.2",
+    "html-minifier": "0.5.5"
   },
   "engines": {
     "node": ">=0.11.9"

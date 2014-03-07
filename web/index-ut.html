@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html class="no-js" ng-app="app">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title></title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
 
-  <!-- START-CSS-MI:app/build/main.css -->
-  <link type="text/css" rel="stylesheet" href="app/styles/main.css">
-  <!-- END-CSS-MI -->
+    <!-- START-CSS-MI:app/build/main.css -->
+    <link type="text/css" rel="stylesheet" href="app/build/main.css">
+    <!-- END-CSS-MI -->
 
-  <base href="/">
-</head>
-<body>
-<div class="page">
-  <header ui-view="header"></header>
-  <div class="main-content" ui-view></div>
-  <footer ui-view="footer"></footer>
-</div>
+    <base href="/">
+  </head>
+  <body>
+    <div class="page">
+      <header ui-view="header"></header>
+      <div class="main-content" ui-view></div>
+      <footer ui-view="footer"></footer>
+    </div>
 
-<script type="text/javascript" src="components/lodash/dist/lodash.min.js"></script>
-<script type="text/javascript" src="app/build/libraries.js"></script>
-<script type="text/javascript" src="app/build/ui-testing.js"></script>
-<script type="text/javascript" src="app/build/application.js"></script>
+    <script type="text/javascript" src="components/lodash/dist/lodash.min.js"></script>
+    <script type="text/javascript" src="app/build/libraries.js"></script>
+    <script type="text/javascript" src="app/build/ui-testing.js"></script>
+    <script type="text/javascript" src="app/build/application.js"></script>
 
-<!-- this diffs on each environement so it can not be combine with other files -->
-<script type="text/javascript" src="app/components/core/constants.js"></script>
-</body>
+    <!-- this diffs on each environment so it can not be combine with other files -->
+    <script type="text/javascript" src="app/components/core/constants.js"></script>
+  </body>
 </html>
