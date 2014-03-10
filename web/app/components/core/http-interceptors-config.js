@@ -1,4 +1,4 @@
-angular.module('app.core.templateInterceptor', [])
+angular.module('app.core.config')
 .config([
   '$httpProvider',
   function($httpProvider) {
@@ -29,17 +29,17 @@ angular.module('app.core.templateInterceptor', [])
                 //todo: implement your own logic for removing elements from the template
                 //example implementation where the data attribute stores user permissions
                 /*var flags;
-                if(removeFlags !== undefined) {
-                  removeElement = false;
-                  flags = removeFlags.split(',');
-                } else {
-                  removeElement = true;
-                  flags = removeFlags.split(',');
-                }
+                 if(removeFlags !== undefined) {
+                 removeElement = false;
+                 flags = removeFlags.split(',');
+                 } else {
+                 removeElement = true;
+                 flags = removeFlags.split(',');
+                 }
 
-                if(session.user.hasPermissions(flags)) {
-                  removeElement = !removeElement;
-                }*/
+                 if(session.user.hasPermissions(flags)) {
+                 removeElement = !removeElement;
+                 }*/
 
                 if(removeElement === true) {
                   element.remove();
