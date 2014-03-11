@@ -1,4 +1,4 @@
-angular.module('app.core.config')
+angular.module('app.core')
 .config([
   '$httpProvider',
   function($httpProvider) {

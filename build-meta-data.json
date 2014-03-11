@@ -1,10 +1,10 @@
 {
   "workingFiles": {
     "web/index-ut.html": {
-      "fileHash": "89a0df4d7c58faf0e2ca8420e3a21ff304c55477"
+      "fileHash": "a13dff12972aa8ba76940443813791d528315cdb"
     },
     "web/index.html": {
-      "fileHash": "a50a024c6c2ab4bd7ee33e3facd750f831839fdb"
+      "fileHash": "aaa628939ea35abf6694d67f4c43138063017882"
     },
     "web/app/components/core/assets/templates/footer.html": {
       "fileHash": "14c45344f78ebcee33d22dddafac9ab5b6447772"
@@ -37,22 +37,16 @@
       "fileHash": "f0018cc4fd42dc4c846b493f690cb02108423f0e"
     },
     "web/app/components/core/module.js": {
-      "fileHash": "e8c7aeec44b2f4f2bfbfd14f2925a82e67826016"
-    },
-    "web/app/components/core/routing-config.js": {
-      "fileHash": "28b157027c9356a5a14b75117ec4cbd1c1742385"
+      "fileHash": "b8b7adca9f4cf17f94f56905f76cbf8d421255ff"
     },
     "web/app/components/core/http-interceptors-config.js": {
-      "fileHash": "dfd61357de769970ead090cf6ae38d25efb78e62"
+      "fileHash": "85a8accf17d24d80dfe6ea56c64b1fea85a93ca0"
     },
     "web/app/components/home/module.js": {
-      "fileHash": "f18e50891deb6c2921d382caf14a6f4745f5b353"
-    },
-    "web/app/components/home/routing-config.js": {
-      "fileHash": "0d6e325dcfcb388bd8bcec8d3b81292844b9833c"
+      "fileHash": "3df5cd10cbcfa81a3be42696fef4f116d5a0649b"
     },
     "web/app/components/home/home-controller.js": {
-      "fileHash": "42964ae4852b362a7cd29ffc751a025883be6679"
+      "fileHash": "176741c58b8c5ba2342d80c569f90a347c48b4e7"
     },
     "web/components/angular-mockable-http-provider/mockable-http-provider.js": {
       "fileHash": "65ac2013e631c2c1e924122f063398c9558d9de3"
@@ -70,13 +64,13 @@
       "fileHash": "ba2cfcf65d59e72cca0a2497db1cde865415bfc4"
     },
     "web/app/build/application.js": {
-      "fileHash": "872bde22e4ef0993a53bcbd73a3a39d86123f30d"
+      "fileHash": "ef42b98763eed7533c1a8855e8a2110e0ebaaf4c"
     },
     "web/app/build/index-ut.html": {
-      "fileHash": "d828d1a52cfe41c29f5afa0be1a22d0576f11594"
+      "fileHash": "a7c008f047a8ec905adcfdbc2ac7da0bc77f54c6"
     },
     "web/app/build/index.html": {
-      "fileHash": "83a4a7b09273c4ab4ffc5e60f8d7b853f96c8c59"
+      "fileHash": "0f77c3b0f0ac81f38e79ea5ca4b21646f356598c"
     },
     "web/app/build/libraries.js": {
       "fileHash": "fd523085eb35fc7cb0ea421e4aec5def0f4d9624"
@@ -102,10 +96,8 @@
     "web/app/build/application.js": [
       "web/app/application.js",
       "web/app/components/core/module.js",
-      "web/app/components/core/routing-config.js",
       "web/app/components/core/http-interceptors-config.js",
       "web/app/components/home/module.js",
-      "web/app/components/home/routing-config.js",
       "web/app/components/home/home-controller.js"
     ],
     "web/app/build/ui-testing.js": [

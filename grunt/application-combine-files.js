@@ -5,9 +5,7 @@ module.exports = [
   //'app/templates.js',
 
   'app/components/core/module.js',
-  'app/components/core/routing-config.js',
   'app/components/core/http-interceptors-config.js',
   'app/components/home/module.js',
-  'app/components/home/routing-config.js',
   'app/components/home/home-controller.js'
 ];

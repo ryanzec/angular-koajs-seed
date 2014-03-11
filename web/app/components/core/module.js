@@ -1,10 +1,24 @@
-angular.module('app.core.config', []);
-
-angular.module('app.core.routing', [
-  'ui.router'
-]);
-
 angular.module('app.core', [
-  'app.core.routing',
-  'app.core.config'
+  'ui.router'
+])
+.config([
+  '$stateProvider',
+  function($stateProvider) {
+    $stateProvider
+    .state('app', {
+      name: 'app',
+      url: '',
+      views: {
+        '': {
+          templateUrl: 'app/components/core/assets/templates/module-wrapper.html'
+        },
+        'header': {
+          templateUrl: 'app/components/core/assets/templates/header.html'
+        },
+        'footer': {
+          templateUrl: 'app/components/core/assets/templates/footer.html'
+        }
+      }
+    });
+  }
 ]);

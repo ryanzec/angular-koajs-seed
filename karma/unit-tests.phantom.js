@@ -1,19 +1,16 @@
 module.exports = function(config) {
   config.set({
     autoWatch: false,
-    basePath: '..',
+    basePath: '../web',
     frameworks: ['mocha', 'chai', 'sinon'],
     browsers: ['PhantomJS'],
     singleRun: true,
     files: [
-      'web/components/moment/moment.js',
-      'web/components/jquery/dist/jquery.js',
-      'web/components/angular/angular.js',
-      'web/components/angular-mocks/angular-mocks.js',
-      'web/components/angular-ui-router/release/angular-ui-router.js',
-      'web/app/*.js',
-      'web/app/components/**/*.js',
-      'tests/*.js'
+      'components/lodash/dist/lodash.min.js',
+      'app/build/libraries.js',
+      'components/angular-mocks/angular-mocks.js',
+      'app/build/application.js',
+      'app/**/*.spec.js'
     ]
   });
 };

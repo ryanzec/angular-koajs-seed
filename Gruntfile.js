@@ -51,12 +51,12 @@ module.exports = function(grunt) {
   grunt.registerTask('build-production', [
     'jshint',
     'sass',
-    'karma',
     //add this in if you wish to serve pre-compiled template files
     //'ngtemplates:app',
     'html-minifier:default',
     'combine-assets:default',
     'rewrite-assets:default',
+    'karma',
     'complexity:reference'
   ]);
 };
