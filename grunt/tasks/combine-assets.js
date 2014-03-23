@@ -73,7 +73,6 @@ module.exports = function(grunt, buildMetaData){
       var fileMatches = [];
 
       files.forEach(function(search) {
-        console.log(search);
         var searchMatch = glob.sync(search);
 
         if(searchMatch.length === 0) {
