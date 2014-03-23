@@ -25,7 +25,8 @@ module.exports = function(grunt, buildMetaData){
         //need to update the build meta data
         var fileList = [];
         files.forEach(function(filePath){
-          fileList.push(filePath.replace(rootDirectory + '/', ''));
+          var buildFilePath = filePath.replace(rootDirectory + '/', '');
+          fileList.push(buildFilePath);
           buildMetaData.addBuildMetaDataFile(path.relative(rootDirectory, filePath), destinationFile);
         });
 
@@ -72,7 +73,14 @@ module.exports = function(grunt, buildMetaData){
       var fileMatches = [];
 
       files.forEach(function(search) {
-        fileMatches = fileMatches.concat(glob.sync(search));
+        console.log(search);
+        var searchMatch = glob.sync(search);
+
+        if(searchMatch.length === 0) {
+          throw Error(('could file find file(s) for: ' + search).red);
+        }
+
+        fileMatches = fileMatches.concat(searchMatch);
       });
 
       files = fileMatches;
