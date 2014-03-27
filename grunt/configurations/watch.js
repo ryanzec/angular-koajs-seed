@@ -37,5 +37,17 @@ module.exports = {
     options: {
       nospawn: true
     }
+  },
+  grunt: {
+    files: [
+      'Gruntfile.js',
+      'grunt/**/*.*'
+    ],
+    tasks: [
+      'build-development'
+    ],
+    options: {
+      nospawn: true
+    }
   }
 }
