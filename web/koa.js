@@ -12,6 +12,9 @@ function readFile(file) {
 }
 
 app.use(function *() {
+  var convertStaticPath = function(resourcePath) {
+    return resourcePath.replace(new RegExp('(static/[0-9]*/)', 'g'), '');
+  };
   var isHtmlFileRequest = this.path.substr(-5) === '.html';
   var filePath = this.path.substr(1);
   var rootDirectory = this.path.split('/')[1];
@@ -23,19 +26,18 @@ app.use(function *() {
     'source'
   ];
 
-  //you can remove this first part of this if statement and use the ngtemplate grunt tasks if you perfer to compile all your template beforehand
   if(isHtmlFileRequest) {
     //serve the build version of the html which is compressed
-    yield send(this, buildPath + '/' + filePath, {
+    yield send(this, convertStaticPath(buildPath + '/' + filePath), {
       root: __dirname
     });
   } else if(validRootDirectories.indexOf(rootDirectory) !== -1) {
     //rewrite file path for static based URIs
     if(filePath.substr(0, 6) === 'static') {
       filePath = filePath.split('/').splice(2).join('/')
-    }
+    };
 
-    yield send(this, filePath, {
+    yield send(this, convertStaticPath(filePath), {
       root: __dirname
     });
   } else {

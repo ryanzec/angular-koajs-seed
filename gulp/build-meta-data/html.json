@@ -1,0 +1,23 @@
+{
+  "workingFiles": {
+    "web/index-ut.html": {
+      "fileHash": "8b1ebcbaa0bcf74b8b85b00b27164b5a22e857b1"
+    },
+    "web/index.html": {
+      "fileHash": "aaa628939ea35abf6694d67f4c43138063017882"
+    },
+    "web/app/components/core/assets/templates/footer.html": {
+      "fileHash": "14c45344f78ebcee33d22dddafac9ab5b6447772"
+    },
+    "web/app/components/core/assets/templates/header.html": {
+      "fileHash": "a21f3c3e6b1154b90fbae9201241b73cfae5d00b"
+    },
+    "web/app/components/core/assets/templates/module-wrapper.html": {
+      "fileHash": "4d6e976842be96713c64de27f84bb9fa54faf0a5"
+    },
+    "web/app/components/home/assets/templates/home.html": {
+      "fileHash": "fae902b812b363060a7035d922a9ed0ec8540ccf"
+    }
+  },
+  "buildFiles": {}
+}

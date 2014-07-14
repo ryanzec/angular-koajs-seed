@@ -5,6 +5,4 @@ node_modules/*
 .sass-cache/*
 web/.sass-cache/*
 web/components/*
-*.css.map
-*.js.map
 docs/*
