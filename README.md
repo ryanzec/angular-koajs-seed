@@ -6,11 +6,11 @@ This is a seed for an AngularJS and ExpressJS application.  This setup should al
 
 Since this uses KoaJS, It requires generator support so you need to use use Node version v0.11.9+.
 
-This also generate source maps for SASS so SASS 3.3 rc2+ needs to be installed .
+This also generate source maps for SASS so SASS 3.3+ needs to be installed.
 
 * Download the repository
 * Make sure you have the following npm packages installed globally:
-  * grunt-cli
+  * gulp
   * bower
   * karma (if you want you do unit testing, and you SHOULD)
   * dalek-cli (if you wanted to do UI unit testing/integration testing, and you should)
@@ -22,17 +22,8 @@ This also generate source maps for SASS so SASS 3.3 rc2+ needs to be installed .
 Here is what is included so far.  As I continue to belong more with AngularJS and KoaJS, this project will continually be updated.
 
 * Includes a basic structure for angular applications that has worked for me
-* This uses Grunt and Bower for a lot of the work
-* Includes a number of custom grunt commands (will look into using existing grunt plugins or converting my commands to plugins at some point)
-
-## Grunt ##
-
-There are also a few of custom grunt commands included in this:
-
-* combine-assets - Combines configured assets together (currently only work for javascript)
-* rewrite-assets - Go through the code and rewrite assets to include timestamps in the URIs to prevent caching issues
-* html-minifier - Copies and minifys html files
-
+* This uses Gulp and Bower for a lot of the work
+* Includes custom build meta data system (to be smart about building files) and a custom static asset rewriter (to allow for indefinite caching of files), everything else uses 3rd party gulp plugins.
 ## License ##
 
 MIT
