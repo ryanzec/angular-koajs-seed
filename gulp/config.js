@@ -27,6 +27,21 @@ var gulpConfig = {
       'web/app/styles/main.scss': 'web/app/build/main.css'
     }
   },
+  sourceFiles: {
+    javascript: [
+      'web/app/application.js',
+      'web/app/components/**/*.js',
+      '!web/app/components/**/*.spec.js'
+    ],
+    html: [
+      'web/*.html',
+      'web/components/**/*.html',
+      'web/app/components/**/*.html'
+    ],
+    sass: [
+      'web/app/**/*.scss'
+    ]
+  },
   bowerCopy: [
     'lodash/dist/lodash.min.js',
     'jshashes/hashes.js',
@@ -36,12 +51,7 @@ var gulpConfig = {
     'angular-ui-router/release/angular-ui-router.js',
     'angular-mockable-http-provider/mockable-http-provider.js',
     'angular-mocks/angular-mocks.js'
-  ],
-  staticRewrite: {
-    fileTypesToRewrite: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css', 'map', 'html'],
-    fileTypesToProcess: ['html', 'css', 'js'],
-    prependSlash: true,
-    domains: []
-  }
+  ]
 };
+
 module.exports = gulpConfig;

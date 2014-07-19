@@ -1,7 +1,25 @@
 {
   "workingFiles": {
+    "web/index-ut.html": {
+      "fileHash": "8b1ebcbaa0bcf74b8b85b00b27164b5a22e857b1"
+    },
+    "web/index.html": {
+      "fileHash": "aaa628939ea35abf6694d67f4c43138063017882"
+    },
     "web/app/application.js": {
       "fileHash": "f0018cc4fd42dc4c846b493f690cb02108423f0e"
+    },
+    "web/app/build/app/components/core/assets/templates/footer.html": {
+      "fileHash": "b37b6f2243a8f36dfd164cba278f81670310aae7"
+    },
+    "web/app/build/app/components/core/assets/templates/header.html": {
+      "fileHash": "f24886eddeeba13b6bf4b03fb4aef082c333bc67"
+    },
+    "web/app/build/app/components/core/assets/templates/module-wrapper.html": {
+      "fileHash": "c96e147894ed9397bcee59e6e2e0707e56e31e32"
+    },
+    "web/app/build/app/components/home/assets/templates/home.html": {
+      "fileHash": "ba2cfcf65d59e72cca0a2497db1cde865415bfc4"
     },
     "web/app/build/application.js": {
       "fileHash": "da4ed71db41f0d9b41a7c5ae33c78caeef5e5aba"
@@ -10,13 +28,16 @@
       "fileHash": "58533999dd22c0d77e0160c1fbe97207aed4bbea"
     },
     "web/app/build/index-ut.html": {
-      "fileHash": "2b0546647c4e99c6e1821c39ed97376156d32f36"
+      "fileHash": "ee3b3762554b4e76ccd369a28d71a95806fd2da4"
     },
     "web/app/build/index.html": {
-      "fileHash": "b3f9a56d0f107c0da9e11e43c3fa2a732be087c3"
+      "fileHash": "2896a4b2751fe7d48d71b50ded2eb24364ce166f"
     },
     "web/app/build/libraries.js": {
       "fileHash": "8c674f54bd16770107fe3fc1a7ac3b3523e8679d"
+    },
+    "web/app/build/libraries.js.map": {
+      "fileHash": "2b067fc5b2b1f08482e5ebec78e0c1e10cb1a534"
     },
     "web/app/build/main.css": {
       "fileHash": "b78a63cb73d634843b2e7272bdfd2b65a0033936"
@@ -57,9 +78,6 @@
     "web/app/components/home/module.js": {
       "fileHash": "3df5cd10cbcfa81a3be42696fef4f116d5a0649b"
     },
-    "web/components/angular/angular.js": {
-      "fileHash": "843ba7ca55bd35ff5c3c9e767bc5e254a82afe3c"
-    },
     "web/components/angular-mockable-http-provider/mockable-http-provider.js": {
       "fileHash": "65ac2013e631c2c1e924122f063398c9558d9de3"
     },
@@ -68,6 +86,9 @@
     },
     "web/components/angular-ui-router/release/angular-ui-router.js": {
       "fileHash": "3d4aab2bffc95cf758066c6a024bb24aa2601b31"
+    },
+    "web/components/angular/angular.js": {
+      "fileHash": "843ba7ca55bd35ff5c3c9e767bc5e254a82afe3c"
     },
     "web/components/jquery/dist/jquery.js": {
       "fileHash": "0fe3e567e0776226ee98326ba8cae7680683c112"
@@ -80,27 +101,6 @@
     },
     "web/components/moment/moment.js": {
       "fileHash": "81183ce4749d3c03bb39dc505d8971ac9fa49aad"
-    },
-    "web/index-ut.html": {
-      "fileHash": "8b1ebcbaa0bcf74b8b85b00b27164b5a22e857b1"
-    },
-    "web/index.html": {
-      "fileHash": "aaa628939ea35abf6694d67f4c43138063017882"
-    },
-    "web/koa.js": {
-      "fileHash": "1b8929740a19d81683072f10507518ce212e6759"
-    },
-    "web/app/build/app/components/core/assets/templates/footer.html": {
-      "fileHash": "b37b6f2243a8f36dfd164cba278f81670310aae7"
-    },
-    "web/app/build/app/components/core/assets/templates/header.html": {
-      "fileHash": "f24886eddeeba13b6bf4b03fb4aef082c333bc67"
-    },
-    "web/app/build/app/components/core/assets/templates/module-wrapper.html": {
-      "fileHash": "c96e147894ed9397bcee59e6e2e0707e56e31e32"
-    },
-    "web/app/build/app/components/home/assets/templates/home.html": {
-      "fileHash": "ba2cfcf65d59e72cca0a2497db1cde865415bfc4"
     }
   },
   "buildFiles": {}

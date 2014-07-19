@@ -10,7 +10,7 @@ var _ = require('lodash');
 
 gulp.task('sass', 'Compile SASS into CSS', function(done) {
   var buildMetaData = buildMetaDataFactory.create(process.cwd() + '/gulp/build-meta-data/sass.json');
-  var sassFiles = buildMetaData.getChangedFiles(gulpConfig.appPath + '/**/*.scss');
+  var sassFiles = buildMetaData.getChangedFiles(gulpConfig.sourceFiles.sass);
 
   if(sassFiles.length > 0) {
     var files = gulpConfig.compileFiles.sass;

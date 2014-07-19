@@ -6,13 +6,7 @@ var gutil = require('gulp-util');
 
 gulp.task('html-minify', 'Minify the HTML', function(done) {
   var buildMetaData = buildMetaDataFactory.create(process.cwd() + '/gulp/build-meta-data/html.json');
-  var files = [
-    gulpConfig.webPath + '/*.html',
-    gulpConfig.vendorComponentsPath + '/**/*.html',
-    gulpConfig.appPath + '/components/**/*.html'
-  ];
-
-  var changedFiles = buildMetaData.getChangedFiles(files);
+  var changedFiles = buildMetaData.getChangedFiles(gulpConfig.sourceFiles.html);
 
   if(changedFiles.length > 0) {
     var stream = gulp.src(changedFiles, {

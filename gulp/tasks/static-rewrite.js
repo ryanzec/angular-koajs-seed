@@ -10,40 +10,21 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var replace = require('gulp-replace');
 
+var config = {
+  fileTypesToRewrite: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css', 'map', 'html'],
+  fileTypesToProcess: ['html', 'css', 'js'],
+  prependSlash: true,
+  domains: [],
+  assetPatterns: [
+    gulpConfig.webPath + '/*.html',
+    gulpConfig.webPath + '/!(build)/**/*.*',
+    gulpConfig.webPath + '/build/*.*',
+    gulpConfig.vendorComponentsPath + '/**/*.*'
+  ]
+};
+
 gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to help with browsers caching resources', function(done) {
   var buildMetaData = buildMetaDataFactory.create(process.cwd() + '/gulp/build-meta-data/static-rewrite.json');
-  var recursiveWalk = function(directory, options, files) {
-    files = files || [];
-    options = options || {};
-
-    var ignoreDirectory = function(directory) {
-      var matchesIgnorePath = false;
-
-      if(_.isArray(options.ignorePaths) && options.ignorePaths.length > 0) {
-        options.ignorePaths.forEach(function(ignorePath) {
-          if(matchesIgnorePath === false && directory.indexOf(ignorePath) !== -1) {
-            matchesIgnorePath = true;
-          }
-        });
-      }
-
-      return matchesIgnorePath;
-    };
-
-    fs.readdirSync(directory).forEach(function(item) {
-      var fullItemPath = directory + '/' + item;
-
-      if(ignoreDirectory(directory)) {
-        return;
-      } else if(fs.statSync(fullItemPath).isDirectory()) {
-        recursiveWalk(fullItemPath, options, files);
-      } else {
-        files.push(fullItemPath);
-      }
-    });
-
-    return files;
-  };
 
   function getRewriteAssetsPath(asset, fullPath) {
     var fileStats = fs.statSync(fullPath);
@@ -55,8 +36,6 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
     return assetParts.join('/');
   };
 
-  var config = gulpConfig.staticRewrite;
-
   var rewritableAssetExtensions = _.map(config.fileTypesToRewrite, function(item) {
     return '.' + item;
   });
@@ -64,11 +43,7 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
     return '.' + item;
   });
 
-  var allAssets = recursiveWalk(process.cwd() + '/'+ gulpConfig.webPath, {
-    ignorePaths: [
-      '/' + gulpConfig.buildPath + '/'
-    ]
-  });
+  var allAssets = globArray.sync(config.assetPatterns);
   var rewriteAssets = [];
 
   allAssets.forEach(function(item) {
@@ -118,9 +93,10 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
         rewrittenPath = '/' + rewrittenPath;
       }
 
-      gutil.log(gutil.colors.cyan('rewrite the asset: ' + asset));
       test.pipe(replace(regex, rewrittenPath));
     });
+
+    gutil.log(gutil.colors.cyan('rewriting ' + rewriteAssets.length + ' assets in ' + filesToProcess.length + ' files'));
 
     test.pipe(gulp.dest(gulpConfig.buildPath));
     test.pipe(through.obj(function(file, encoding, cb) {
