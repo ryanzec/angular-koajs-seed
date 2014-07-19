@@ -39,7 +39,8 @@ var gulpConfig = {
       'web/app/components/**/*.html'
     ],
     sass: [
-      'web/app/**/*.scss'
+      'web/app/**/*.scss',
+      'web/components/**/*.scss'
     ]
   },
   bowerCopy: [
