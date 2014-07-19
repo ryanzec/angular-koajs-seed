@@ -13,7 +13,7 @@ function readFile(file) {
 
 app.use(function *() {
   var convertStaticPath = function(resourcePath) {
-    return resourcePath.replace(new RegExp('(static/[0-9]*/)', 'g'), '');
+    return resourcePath.replace(new RegExp('(static/[0-9a-zA-Z]*/)', 'g'), '');
   };
   var isHtmlFileRequest = this.path.substr(-5) === '.html';
   var filePath = this.path.substr(1);

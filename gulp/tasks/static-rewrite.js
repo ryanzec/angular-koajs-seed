@@ -9,6 +9,7 @@ var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
 var replace = require('gulp-replace');
+var crypto = require('crypto');
 
 var config = {
   fileTypesToRewrite: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css', 'map', 'html'],
@@ -27,11 +28,15 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
   var buildMetaData = buildMetaDataFactory.create(process.cwd() + '/gulp/build-meta-data/static-rewrite.json');
 
   function getRewriteAssetsPath(asset, fullPath) {
-    var fileStats = fs.statSync(fullPath);
+    var shasum = crypto.createHash('sha1');
+    shasum.update(fs.readFileSync(fullPath, {
+      encoding: 'utf8'
+    }));
+    var sha = shasum.digest('hex');
     var assetParts = asset.split('/');
     var spliceStart = 0;
 
-    assetParts.splice(spliceStart, 0, 'static', moment(fileStats.mtime).unix());
+    assetParts.splice(spliceStart, 0, 'static', sha);
 
     return assetParts.join('/');
   };
@@ -78,7 +83,7 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
     rewriteAssets.forEach(function(asset) {
       var fullPath = process.cwd() + '/' + asset;
       asset = asset.replace(gulpConfig.webPath + '/', '');
-      var regex = new RegExp('((http[s]?:)?//[a-zA-Z0-9-_.]*.[a-zA-Z0-9-_]*.[a-zA-Z0-9-_]{2,6})?/?((static/[0-9]*/)+)?' + asset, 'g');
+      var regex = new RegExp('((http[s]?:)?//[a-zA-Z0-9-_.]*.[a-zA-Z0-9-_]*.[a-zA-Z0-9-_]{2,6})?/?((static/[0-9a-zA-Z]*/)+)?' + asset, 'g');
       var rewrittenPath = getRewriteAssetsPath(asset, fullPath);//see if we should set the full url or just leave it as a relative path
 
       if(config.domains.length > 0) {
@@ -103,14 +108,17 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
       count -= 1;
 
       if(count == 0) {
-        buildMetaData.addBuildMetaDataFiles(rewriteAssets);
-        buildMetaData.addBuildMetaDataFiles(filesToProcess);
+        //add a delay here to make sure the build meta data incorperates the static rewrite when hashing the files
+        setTimeout(function() {
+          buildMetaData.addBuildMetaDataFiles(rewriteAssets);
+          buildMetaData.addBuildMetaDataFiles(filesToProcess);
 
-        if(buildMetaData.writeFile()) {
-          gutil.log(gutil.colors.cyan('writing build meta data file: ' + buildMetaData.filePath));
-        }
+          if(buildMetaData.writeFile()) {
+            gutil.log(gutil.colors.cyan('writing build meta data file: ' + buildMetaData.filePath));
+          }
 
-        done();
+          done();
+        }, 500);
       }
 
       cb();
