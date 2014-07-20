@@ -14,6 +14,7 @@ var crypto = require('crypto');
 var config = {
   fileTypesToRewrite: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css', 'map', 'html'],
   fileTypesToProcess: ['html', 'css', 'js'],
+  assetPaths: ['app', 'components'],
   prependSlash: true,
   domains: [],
   assetPatterns: [
@@ -23,6 +24,7 @@ var config = {
     gulpConfig.vendorComponentsPath + '/**/*.*'
   ]
 };
+var currentDomainKey = 0;
 
 gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to help with browsers caching resources', function(done) {
   var buildMetaData = buildMetaDataFactory.create(process.cwd() + '/gulp/build-meta-data/static-rewrite.json');
@@ -80,29 +82,61 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
       base: gulpConfig.buildPath
     });
 
-    rewriteAssets.forEach(function(asset) {
-      var fullPath = process.cwd() + '/' + asset;
-      asset = asset.replace(gulpConfig.webPath + '/', '');
-      var regex = new RegExp('((http[s]?:)?//[a-zA-Z0-9-_.]*.[a-zA-Z0-9-_]*.[a-zA-Z0-9-_]{2,6})?/?((static/[0-9a-zA-Z]*/)+)?' + asset, 'g');
-      var rewrittenPath = getRewriteAssetsPath(asset, fullPath);//see if we should set the full url or just leave it as a relative path
+    test.pipe(through.obj(function(file, encoding, cb) {
+      if(!file.contents instanceof Buffer) {
+        return cb(new Error('static rewrite can only work on buffers'), file);
+      } else {
+        var fileContents = String(file.contents);
+        var regex = new RegExp("[\"']((http[s]?:)?//[a-zA-Z0-9-_.]*\\.[a-zA-Z0-9-_]*\\.[a-zA-Z0-9-_]{2,6})?/?(((static/[0-9a-zA-Z]*/)+)?((" + config.assetPaths.join('|') + ")/[a-zA-Z0-9-_./]+\\.(" + config.fileTypesToRewrite.join('|') + ")))[\"']", 'g');
 
-      if(config.domains.length > 0) {
-        rewrittenPath = config.domains[currentDomainKey] + '/' + rewrittenPath;
+        var noMatches = false;
+        var match;
+        var assetMatches = [];
 
-        if(maxDomainKey > 0 && currentDomainKey >= maxDomainKey) {
-          currentDomainKey = 0;
-        } else if(maxDomainKey > 0 && _.isArray(fileContents.match(regex))) {
-          currentDomainKey += 1;
+        do {
+          match = regex.exec(fileContents);
+
+          if(match === null) {
+            noMatches = true;
+          } else {
+            var matchObject = {};
+            matchObject[match[0]] = match[6];
+            assetMatches.push(matchObject);
+          }
+        } while(noMatches === false);
+
+        if(assetMatches.length > 0) {
+          gutil.log(gutil.colors.magenta('rewriting assets in ' + gulpConfig.buildPath + '/' + file.relative + ':'));
+          assetMatches.forEach(function(matchObject) {
+            var toReplace = Object.keys(matchObject)[0];
+            var assetPath = matchObject[Object.keys(matchObject)[0]];
+            var rewrittenPath = getRewriteAssetsPath(assetPath, process.cwd() + '/' + gulpConfig.webPath + '/' + assetPath);
+
+            if(config.domains.length > 0) {
+              rewrittenPath = config.domains[currentDomainKey] + '/' + rewrittenPath;
+
+              if(currentDomainKey >= config.domains.length - 1) {
+                currentDomainKey = 0;
+              } else {
+                currentDomainKey += 1;
+              }
+            } else if(config.prependSlash === true) {
+              rewrittenPath = '/' + rewrittenPath;
+            }
+
+            rewrittenPath = '"' + rewrittenPath + '"';
+
+            gutil.log(gutil.colors.cyan(toReplace + ' => ' + rewrittenPath));
+
+            fileContents = fileContents.replace(toReplace, rewrittenPath);
+          });
         }
-      } else if(config.prependSlash === true) {
-        rewrittenPath = '/' + rewrittenPath;
+
+        file.contents = new Buffer(fileContents);
       }
 
-      test.pipe(replace(regex, rewrittenPath));
-    });
-
-    gutil.log(gutil.colors.cyan('rewriting ' + rewriteAssets.length + ' assets in ' + filesToProcess.length + ' files'));
-
+      cb(null, file);
+    }));
     test.pipe(gulp.dest(gulpConfig.buildPath));
     test.pipe(through.obj(function(file, encoding, cb) {
       count -= 1;
