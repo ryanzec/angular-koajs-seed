@@ -6,12 +6,16 @@ var uglify = require('gulp-uglifyjs');
 var through = require('through2');
 var gutil = require('gulp-util');
 var _ = require('lodash');
+var globArray = require('glob-array');
 
 gulp.task('javascript', 'Concat and minify JavaScript (with UglifyJS)', function(done) {
   var buildMetaData = buildMetaDataFactory.create(process.cwd() + '/gulp/build-meta-data/javascript.json');
-  var count = 0;
+  var count = Object.keys(gulpConfig.compileFiles.javascript).length * 2;
 
   _.forEach(gulpConfig.compileFiles.javascript, function(buildFiles, buildFileName) {
+    buildFiles = globArray.sync(buildFiles).filter(function(elem, pos, myArray) {
+      return myArray.indexOf(elem) == pos && fs.lstatSync(process.cwd() + '/' + elem).isFile();
+    });
     var fullBuildFilePath = process.cwd() + '/' + gulpConfig.buildPath + '/' + buildFileName;
     var relativeBuildFilePath = gulpConfig.buildPath + '/' + buildFileName;
 
@@ -20,7 +24,6 @@ gulp.task('javascript', 'Concat and minify JavaScript (with UglifyJS)', function
       || buildMetaData.hasChangedFile(buildFiles)
       || !buildMetaData.hasSameFiles(relativeBuildFilePath, buildFiles)
     ) {
-      count += 1;
       gulp.src(buildFiles)
       .pipe(uglify(buildFileName, {
         basePath: gulpConfig.webPath,
@@ -28,13 +31,12 @@ gulp.task('javascript', 'Concat and minify JavaScript (with UglifyJS)', function
       }))
       .pipe(gulp.dest(gulpConfig.buildPath))
       .pipe(through.obj(function(file, encoding, cb) {
+        count -= 1;
+
         //don't process the map file
         if(file.relative !== buildFileName) {
-          return;
+          buildMetaData.addBuildMetaDataFiles(buildFiles, relativeBuildFilePath);
         }
-
-        count -= 1;
-        buildMetaData.addBuildMetaDataFiles(buildFiles, relativeBuildFilePath);
 
         if(count == 0) {
           if(buildMetaData.writeFile()) {
@@ -44,8 +46,10 @@ gulp.task('javascript', 'Concat and minify JavaScript (with UglifyJS)', function
           done();
         }
 
-        cb();
+        cb(null, file);
       }));
+    } else {
+      count -= 2;
     }
   });
 

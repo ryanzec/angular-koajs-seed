@@ -8,7 +8,6 @@ var fs = require('fs');
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
-var replace = require('gulp-replace');
 var crypto = require('crypto');
 
 var config = {
@@ -54,7 +53,7 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
   var rewriteAssets = [];
 
   allAssets.forEach(function(item) {
-    if(rewritableAssetExtensions.indexOf(path.extname(item)) !== -1) {
+    if(fs.statSync(process.cwd() + '/' + item).isDirectory() === false && rewritableAssetExtensions.indexOf(path.extname(item)) !== -1) {
       rewriteAssets.push(item.replace(process.cwd() + '/', ''));
     }
   });
@@ -78,11 +77,10 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
   }
 
   if(count > 0 && rewriteAssets.length > 0) {
-    var test = gulp.src(filesToProcess, {
+    gulp.src(filesToProcess, {
       base: gulpConfig.buildPath
-    });
-
-    test.pipe(through.obj(function(file, encoding, cb) {
+    })
+    .pipe(through.obj(function(file, encoding, cb) {
       if(!file.contents instanceof Buffer) {
         return cb(new Error('static rewrite can only work on buffers'), file);
       } else {
@@ -130,15 +128,16 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
 
             fileContents = fileContents.replace(toReplace, rewrittenPath);
           });
+        } else {
+          gutil.log(gutil.colors.green('no assets to rewrite in ' + gulpConfig.buildPath + '/' + file.relative));
         }
 
         file.contents = new Buffer(fileContents);
       }
 
-      cb(null, file);
-    }));
-    test.pipe(gulp.dest(gulpConfig.buildPath));
-    test.pipe(through.obj(function(file, encoding, cb) {
+      return cb(null, file);
+    }))
+    .pipe(through.obj(function(file, encoding, cb) {
       count -= 1;
 
       if(count == 0) {
@@ -150,13 +149,14 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
           if(buildMetaData.writeFile()) {
             gutil.log(gutil.colors.cyan('writing build meta data file: ' + buildMetaData.filePath));
           }
-
-          done();
         }, 500);
+
+        done();
       }
 
-      cb();
-    }));
+      cb(null, file);
+    }))
+    .pipe(gulp.dest(gulpConfig.buildPath));
   } else {
     done();
   }
