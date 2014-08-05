@@ -8,7 +8,7 @@
   },
   "devDependencies": {
       "glob": "4.0.4",
-      "glob-array": "0.1.0",
+      "glob-array": "0.1.1",
       "mkdirp": "0.3.4",
       "lodash": "2.4.1",
       "moment": "2.4.0",
@@ -17,7 +17,7 @@
       "string-format-js": "0.1.1",
       "async": "0.9.0",
       "del": "0.1.0",
-      "build-meta-data": "0.1.0",
+      "build-meta-data": "0.1.1",
       "through2": "0.5.1",
       "gulp": "3.8.2",
       "gulp-ruby-sass": "0.6.0",
