@@ -13,9 +13,14 @@ gulp.task('clean-build', 'Remove all build data and code in order to perform a b
     del('./' + gulpConfig.buildPath, cb);
   }
 
+  function removeSassCache(cb) {
+    del('./.sass-cache', cb);
+  }
+
   async.series([
     removeBuildMetaData,
-    removeBuildCode
+    removeBuildCode,
+    removeSassCache
   ], done);
 });
 
@@ -25,4 +30,12 @@ gulp.task('build-clean', "Perform a clean build", function(done) {
     'build',
     done
   );
-})
+});
+
+gulp.task('build-clean-quick', "Perform a clean build", function(done) {
+  runSequence(
+    'clean-build',
+    'build-quick',
+    done
+  );
+});

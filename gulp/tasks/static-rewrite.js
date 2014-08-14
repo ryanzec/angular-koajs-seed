@@ -10,19 +10,7 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var crypto = require('crypto');
 
-var config = {
-  fileTypesToRewrite: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css', 'map', 'html'],
-  fileTypesToProcess: ['html', 'css', 'js'],
-  assetPaths: ['app', 'components'],
-  prependSlash: true,
-  domains: [],
-  assetPatterns: [
-    gulpConfig.webPath + '/*.html',
-    gulpConfig.webPath + '/!(build)/**/*.*',
-    gulpConfig.webPath + '/build/*.*',
-    gulpConfig.vendorComponentsPath + '/**/*.*'
-  ]
-};
+var config = require('../config.js').tasks.staticRewrite;
 var currentDomainKey = 0;
 
 gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to help with browsers caching resources', function(done) {

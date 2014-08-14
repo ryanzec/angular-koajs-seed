@@ -52,7 +52,23 @@ var gulpConfig = {
     'angular-ui-router/release/angular-ui-router.js',
     'angular-mockable-http-provider/mockable-http-provider.js',
     'angular-mocks/angular-mocks.js'
-  ]
+  ],
+  tasks: {
+    staticRewrite {
+      fileTypesToRewrite: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css', 'map', 'html'],
+      fileTypesToProcess: ['html', 'css', 'js'],
+      assetPaths: ['app', 'components'],
+      prependSlash: true,
+      domains: [],
+      assetPatterns: [
+        'web/*.html',
+        'web/app/**/*.*',
+        'web/components/**/*.*'
+        //test files should not trigger static rewrite
+        '!web/app/**/*.spec.js'
+      ]
+    }
+  }
 };
 
 module.exports = gulpConfig;

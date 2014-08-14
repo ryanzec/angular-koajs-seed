@@ -11,6 +11,7 @@
   ],
   "singleRun": true,
   "files": [
+    "../karma/es5-shim.js",
     "components/lodash/dist/lodash.min.js",
     "app/build/libraries.js",
     "components/angular-mocks/angular-mocks.js",
