@@ -54,7 +54,7 @@ var gulpConfig = {
     'angular-mocks/angular-mocks.js'
   ],
   tasks: {
-    staticRewrite {
+    staticRewrite: {
       fileTypesToRewrite: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css', 'map', 'html'],
       fileTypesToProcess: ['html', 'css', 'js'],
       assetPaths: ['app', 'components'],
