@@ -22,7 +22,7 @@ gulp.task('sass', 'Compile SASS into CSS', function(done) {
     }
 
     _.forEach(files, function(destination, source) {
-      var command = 'sass --scss --sourcemap -q -t compressed --scss ' + source + ' ' + destination;
+      var command = 'sass --scss -q -t compressed --scss ' + source + ' ' + destination;
       gutil.log(gutil.colors.cyan('running command:'), command);
 
       // we are calling ruby sass manually because gulp-ruby-sass currently does not work with imports and older versions are too slow

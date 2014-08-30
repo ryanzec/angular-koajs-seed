@@ -17,6 +17,20 @@
       <footer ui-view="footer"></footer>
     </div>
 
+    <!-- Makes sure the errors fully show -->
+    <script type="text/javascript">
+    window.onerror = function (errorMsg, url, lineNumber, columnNumber, errorObject) {
+        var errMsg;
+        //check the errorObject as IE and FF don't pass it through (yet)
+        if (errorObject && errorObject !== undefined) {
+                errMsg = errorObject.message;
+            }
+            else {
+                errMsg = errorMsg;
+            }
+        console.log('Error: ' + errMsg);
+    }
+    </script>
     <script type="text/javascript" src="components/lodash/dist/lodash.min.js"></script>
     <script type="text/javascript" src="app/build/libraries.js"></script>
     <script type="text/javascript" src="app/build/application.js"></script>

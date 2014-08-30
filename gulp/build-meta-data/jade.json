@@ -1,0 +1,17 @@
+{
+  "workingFiles": {
+    "web/app/components/core/assets/templates/footer.jade": {
+      "fileHash": "90150dbb06f1f44af3bea9df6a3175cda6128205"
+    },
+    "web/app/components/core/assets/templates/header.jade": {
+      "fileHash": "f886bf54cfd54ee48a416383f8e98cad03afa96d"
+    },
+    "web/app/components/core/assets/templates/module-wrapper.jade": {
+      "fileHash": "126025f907e1d2e047017f104d047975ed8208d6"
+    },
+    "web/app/components/home/assets/templates/home.jade": {
+      "fileHash": "1ac983c7f7934d0192615fe8d9c86c8820b6e535"
+    }
+  },
+  "buildFiles": {}
+}

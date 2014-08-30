@@ -4,9 +4,9 @@ This is a seed for an AngularJS and ExpressJS application.  This setup should al
 
 ## Setup ##
 
-Since this uses KoaJS, It requires generator support so you need to use use Node version v0.11.9+.
+Since this uses KoaJS, It requires generator support so you need to use use Node version v0.11.x+.
 
-This also generate source maps for SASS so SASS 3.3+ needs to be installed.
+This also generate source maps for SASS so SASS 3.4+ needs to be installed.
 
 * Download the repository
 * Make sure you have the following npm packages installed globally:

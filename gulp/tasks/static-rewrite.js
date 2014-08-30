@@ -18,7 +18,13 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
 
   function getRewriteAssetsPath(asset, fullPath) {
     var shasum = crypto.createHash('sha1');
-    shasum.update(fs.readFileSync(fullPath, {
+    var filePath = fullPath;
+
+    if(!fs.existsSync(filePath) && config.preprocessors[path.extname(filePath)]) {
+      filePath = filePath.substr(0, filePath.length -5) + config.preprocessors[path.extname(filePath)];
+    }
+
+    shasum.update(fs.readFileSync(filePath, {
       encoding: 'utf8'
     }));
     var sha = shasum.digest('hex');

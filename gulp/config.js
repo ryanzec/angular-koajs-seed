@@ -10,10 +10,10 @@ var gulpConfig = {
       ],
       'application.js': [
         'web/app/application.js',
-        'web/app/components/core/module.js',
-        'web/app/components/core/http-interceptors-config.js',
-        'web/app/components/home/module.js',
-        'web/app/components/home/home-controller.js'
+        'web/app/components/**/module.js',
+        'web/app/components/**/*.js',
+        //dopn't include test with compiled file
+        '!web/app/**/*.spec.js'
       ],
       'libraries.js': [
         'web/components/jshashes/hashes.js',
@@ -41,6 +41,9 @@ var gulpConfig = {
     sass: [
       'web/app/**/*.scss',
       'web/components/**/*.scss'
+    ],
+    jade: [
+      'web/app/components/**/*.jade'
     ]
   },
   bowerCopy: [
@@ -60,10 +63,13 @@ var gulpConfig = {
       assetPaths: ['app', 'components'],
       prependSlash: true,
       domains: [],
+      preprocessors: {
+        '.html': '.jade'
+      },
       assetPatterns: [
         'web/*.html',
         'web/app/**/*.*',
-        'web/components/**/*.*'
+        'web/components/**/*.*',
         //test files should not trigger static rewrite
         '!web/app/**/*.spec.js'
       ]

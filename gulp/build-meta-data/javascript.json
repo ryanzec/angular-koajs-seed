@@ -1,7 +1,19 @@
 {
   "workingFiles": {
     "web/components/angular-mockable-http-provider/mockable-http-provider.js": {
-      "fileHash": "65ac2013e631c2c1e924122f063398c9558d9de3"
+      "fileHash": "9560718d7fdef92ddb966640f0366975172218f4"
+    },
+    "web/components/jshashes/hashes.js": {
+      "fileHash": "f20145b631c904d5a35410bb0f0bbd38eae71f7b"
+    },
+    "web/components/jquery/dist/jquery.js": {
+      "fileHash": "8d55aabf2b76486cc311fdc553a3613cad46aa3f"
+    },
+    "web/components/angular/angular.js": {
+      "fileHash": "7127d8327781f88ede09074b4dacf8ca2dc2a9b3"
+    },
+    "web/components/angular-ui-router/release/angular-ui-router.js": {
+      "fileHash": "3d4aab2bffc95cf758066c6a024bb24aa2601b31"
     },
     "web/app/application.js": {
       "fileHash": "f0018cc4fd42dc4c846b493f690cb02108423f0e"
@@ -9,48 +21,32 @@
     "web/app/components/core/module.js": {
       "fileHash": "b8b7adca9f4cf17f94f56905f76cbf8d421255ff"
     },
-    "web/app/components/core/http-interceptors-config.js": {
-      "fileHash": "85a8accf17d24d80dfe6ea56c64b1fea85a93ca0"
-    },
     "web/app/components/home/module.js": {
       "fileHash": "3df5cd10cbcfa81a3be42696fef4f116d5a0649b"
     },
+    "web/app/components/core/template-modifier-interceptor-factory.js": {
+      "fileHash": "166db4f08d611743a8f5b99cb30fdb2d6fc08e4a"
+    },
     "web/app/components/home/home-controller.js": {
       "fileHash": "176741c58b8c5ba2342d80c569f90a347c48b4e7"
-    },
-    "web/components/jshashes/hashes.js": {
-      "fileHash": "f20145b631c904d5a35410bb0f0bbd38eae71f7b"
-    },
-    "web/components/moment/moment.js": {
-      "fileHash": "81183ce4749d3c03bb39dc505d8971ac9fa49aad"
-    },
-    "web/components/jquery/dist/jquery.js": {
-      "fileHash": "0fe3e567e0776226ee98326ba8cae7680683c112"
-    },
-    "web/components/angular/angular.js": {
-      "fileHash": "843ba7ca55bd35ff5c3c9e767bc5e254a82afe3c"
-    },
-    "web/components/angular-ui-router/release/angular-ui-router.js": {
-      "fileHash": "3d4aab2bffc95cf758066c6a024bb24aa2601b31"
     }
   },
   "buildFiles": {
     "web/app/build/ui-testing.js": [
       "web/components/angular-mockable-http-provider/mockable-http-provider.js"
     ],
-    "web/app/build/application.js": [
-      "web/app/application.js",
-      "web/app/components/core/module.js",
-      "web/app/components/core/http-interceptors-config.js",
-      "web/app/components/home/module.js",
-      "web/app/components/home/home-controller.js"
-    ],
     "web/app/build/libraries.js": [
       "web/components/jshashes/hashes.js",
-      "web/components/moment/moment.js",
       "web/components/jquery/dist/jquery.js",
       "web/components/angular/angular.js",
       "web/components/angular-ui-router/release/angular-ui-router.js"
+    ],
+    "web/app/build/application.js": [
+      "web/app/application.js",
+      "web/app/components/core/module.js",
+      "web/app/components/home/module.js",
+      "web/app/components/core/template-modifier-interceptor-factory.js",
+      "web/app/components/home/home-controller.js"
     ]
   }
 }

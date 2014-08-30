@@ -4,7 +4,7 @@ var runSequence = require('run-sequence');
 gulp.task('build', 'Builds the code along with running quality checks (tests, hints, etc...)', function(done) {
   runSequence(
     'jshint',
-    ['sass', 'javascript', 'html-minify', 'copy-static-assets'],
+    ['sass', 'javascript', 'html-minify', 'jade', 'copy-static-assets'],
     'static-rewrite',
     'karma',
     'complexity',
@@ -14,7 +14,7 @@ gulp.task('build', 'Builds the code along with running quality checks (tests, hi
 
 gulp.task('build-quick', 'Builds the code without running quality checks', function(done) {
   runSequence(
-    ['sass', 'javascript', 'html-minify', 'copy-static-assets'],
+    ['sass', 'javascript', 'html-minify', 'jade', 'copy-static-assets'],
     'static-rewrite',
     done
   );
