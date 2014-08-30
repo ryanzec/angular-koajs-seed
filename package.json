@@ -1,7 +1,7 @@
 {
   "name": "angular-koajs-seed",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.7.0",
   "dependencies": {
     "koa": "0.10.0",
     "koa-send": "1.2.4"
