@@ -21,7 +21,7 @@ gulp.task('static-rewrite', 'Rewrite assets with "/static/[timestamp]/..." to he
     var filePath = fullPath;
 
     if(!fs.existsSync(filePath) && config.preprocessors[path.extname(filePath)]) {
-      filePath = filePath.substr(0, filePath.length -5) + config.preprocessors[path.extname(filePath)];
+      filePath = filePath.substr(0, filePath.length - path.extname(filePath).length) + config.preprocessors[path.extname(filePath)];
     }
 
     shasum.update(fs.readFileSync(filePath, {
