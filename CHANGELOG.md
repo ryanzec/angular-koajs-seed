@@ -4,6 +4,7 @@
 
 This version now requires AngularJS 1.3.0-RC.0+ and Sass 3.4+.
 
+- replaced all .html file with .jade
 - updated bower/npm packages
 - added/updated gulp tasks for Jade.js support
 - updated gulp sass task to account for changes in Sass 3.4.x

@@ -11,6 +11,12 @@
     },
     "web/app/components/home/assets/templates/home.jade": {
       "fileHash": "1ac983c7f7934d0192615fe8d9c86c8820b6e535"
+    },
+    "web/index-ut.jade": {
+      "fileHash": "3a9fa9c5a8494c67032dfcd75c08a52c4825a9fb"
+    },
+    "web/index.jade": {
+      "fileHash": "99bda1acd8bcb270458e74e9030434524f83cb15"
     }
   },
   "buildFiles": {}

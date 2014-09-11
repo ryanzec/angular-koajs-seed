@@ -10,7 +10,7 @@
       "fileHash": "8d55aabf2b76486cc311fdc553a3613cad46aa3f"
     },
     "web/components/angular/angular.js": {
-      "fileHash": "7127d8327781f88ede09074b4dacf8ca2dc2a9b3"
+      "fileHash": "f8acd519607f5bc054576e35352233cc17812cc2"
     },
     "web/components/angular-ui-router/release/angular-ui-router.js": {
       "fileHash": "3d4aab2bffc95cf758066c6a024bb24aa2601b31"
@@ -28,7 +28,7 @@
       "fileHash": "166db4f08d611743a8f5b99cb30fdb2d6fc08e4a"
     },
     "web/app/components/home/home-controller.js": {
-      "fileHash": "176741c58b8c5ba2342d80c569f90a347c48b4e7"
+      "fileHash": "708f85bda7efa8dbe01521014f13527f0fc5eb24"
     }
   },
   "buildFiles": {

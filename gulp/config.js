@@ -43,7 +43,8 @@ var gulpConfig = {
       'web/components/**/*.scss'
     ],
     jade: [
-      'web/app/components/**/*.jade'
+      'web/app/components/**/*.jade',
+      'web/*.jade'
     ]
   },
   bowerCopy: [

@@ -1,0 +1,21 @@
+doctype html
+html.no-js(ng-app='app')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title
+    meta(name='description', content='')
+    meta(name='viewport', content='width=device-width')
+    link(type='text/css', rel='stylesheet', href='app/build/main.css')
+    base(href='/')
+  body
+    .page
+      header(ui-view='header')
+      .main-content(ui-view)
+      footer(ui-view='footer')
+    //Makes sure the errors fully show
+    script(type='text/javascript', src='app/misc/full-debug.js')
+    script(type='text/javascript', src='components/lodash/dist/lodash.min.js')
+    script(type='text/javascript', src='app/build/libraries.js')
+    script(type='text/javascript', src='app/build/ui-testing.js')
+    script(type='text/javascript', src='app/build/application.js')

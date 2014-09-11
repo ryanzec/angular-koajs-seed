@@ -1,11 +1,5 @@
 {
   "workingFiles": {
-    "web/index-ut.html": {
-      "fileHash": "5d604d1397b17c41e55012fc7577ee7764194498"
-    },
-    "web/index.html": {
-      "fileHash": "fedafaee5e1ee90ba10339415604b9a4b4670763"
-    },
     "web/app/application.js": {
       "fileHash": "f0018cc4fd42dc4c846b493f690cb02108423f0e"
     },
@@ -31,19 +25,19 @@
       "fileHash": "560be0875958b8f83a2b89da67ed5be3d0fcb591"
     },
     "web/app/build/index-ut.html": {
-      "fileHash": "b905131612e1de8fde0b9c81d8fbf2b540db3a7a"
+      "fileHash": "44cea0fac9aa9e010bc572944656c6c4c6d0e26f"
     },
     "web/app/build/index.html": {
-      "fileHash": "112a24557834992b975f79018be0f38a989876aa"
+      "fileHash": "175049212867e1a3c0c357b2f5298daf2a731541"
     },
     "web/app/build/libraries.js": {
-      "fileHash": "1469ae13c2be6cb508e387c3147a982bcde4bda0"
+      "fileHash": "127ed5383fd72797063971d2cf89b564097cca12"
     },
     "web/app/build/libraries.js.map": {
-      "fileHash": "0b8bed7d0453cd75d7e5a2745015a836441940c6"
+      "fileHash": "29c3398d3c2ec2bfbaedfeaa9d650ec06b23e521"
     },
     "web/app/build/libraries.production.js": {
-      "fileHash": "31510965f44062774108446df8396cda267e4e23"
+      "fileHash": "dc71c0ea465ce451033be4bcc7e5b74683e2eb1b"
     },
     "web/app/build/main.css": {
       "fileHash": "b78a63cb73d634843b2e7272bdfd2b65a0033936"
@@ -67,22 +61,25 @@
       "fileHash": "166db4f08d611743a8f5b99cb30fdb2d6fc08e4a"
     },
     "web/app/components/home/home-controller.js": {
-      "fileHash": "176741c58b8c5ba2342d80c569f90a347c48b4e7"
+      "fileHash": "708f85bda7efa8dbe01521014f13527f0fc5eb24"
     },
     "web/app/components/home/module.js": {
       "fileHash": "3df5cd10cbcfa81a3be42696fef4f116d5a0649b"
+    },
+    "web/app/misc/full-debug.js": {
+      "fileHash": "5351ec316a142858f9a997d47c307f10398022f8"
     },
     "web/components/angular-mockable-http-provider/mockable-http-provider.js": {
       "fileHash": "9560718d7fdef92ddb966640f0366975172218f4"
     },
     "web/components/angular-mocks/angular-mocks.js": {
-      "fileHash": "432bbe7395912c604f7c8aaa2f073ac9ed9e182b"
+      "fileHash": "3ed545cd5b2ca46144210695862f9044476897dc"
     },
     "web/components/angular-ui-router/release/angular-ui-router.js": {
       "fileHash": "3d4aab2bffc95cf758066c6a024bb24aa2601b31"
     },
     "web/components/angular/angular.js": {
-      "fileHash": "7127d8327781f88ede09074b4dacf8ca2dc2a9b3"
+      "fileHash": "f8acd519607f5bc054576e35352233cc17812cc2"
     },
     "web/components/jquery/dist/jquery.js": {
       "fileHash": "8d55aabf2b76486cc311fdc553a3613cad46aa3f"
