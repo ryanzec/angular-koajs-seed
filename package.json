@@ -31,17 +31,17 @@
       "gulp-help": "0.1.11",
       "run-sequence": "0.3.6",
       "gulp-replace": "0.4.0",
-      "dalekjs-canary": "x.x.x",
-      "dalek-browser-chrome-canary": "x.x.x",
-      "dalek-browser-firefox-canary": "x.x.x",
       "karma": "0.12.23",
       "karma-phantomjs-launcher": "0.1.4",
       "karma-mocha": "0.1.9",
       "karma-chai": "0.1.0",
       "karma-sinon": "1.0.3",
-      "mocha": "1.17.1",
-      "sinon": "1.10.3",
-      "gulp-jade": "0.7.0"
+      "gulp-jade": "0.7.0",
+      "mocha": "1.20.1",
+      "sinon": "1.8.1",
+      "chai": "1.9.1",
+      "chai-as-promised": "4.1.1",
+      "protractor-test-objects": "0.2.2"
   },
   "engines": {
     "node": ">=0.11.9"
