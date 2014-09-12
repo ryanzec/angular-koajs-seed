@@ -3,7 +3,6 @@ var gulpConfig = require('../config.js');
 var buildMetaDataFactory = require('build-meta-data');
 var globArray = require('glob-array');
 var _ = require('lodash');
-var moment = require('moment');
 var fs = require('fs');
 var path = require('path');
 var gutil = require('gulp-util');

@@ -75,6 +75,13 @@ var gulpConfig = {
         //test files should not trigger static rewrite
         '!web/app/**/*.spec.js'
       ]
+    },
+    copyStaticAssets: {
+      staticAssetExtensions: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg'],
+      staticAssetFolders: [
+        'web/components',
+        'web/app/components'
+      ]
     }
   }
 };

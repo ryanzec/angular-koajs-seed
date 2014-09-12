@@ -2,13 +2,7 @@ var gulp = require('gulp');
 var gulpConfig = require('../config.js');
 var buildMetaDataFactory = require('build-meta-data');
 var gutil = require('gulp-util');
-var config = {
-  staticAssetExtensions: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg'],
-  staticAssetFolders: [
-    gulpConfig.vendorComponentsPath,
-    gulpConfig.appPath + '/components'
-  ]
-}
+var config = gulpConfig.tasks.copyStaticAssets;
 
 gulp.task('copy-static-assets', 'Copy static assets to the build folder', function(done) {
   var buildMetaData = buildMetaDataFactory.create(process.cwd() + '/gulp/build-meta-data/static-assets.json');

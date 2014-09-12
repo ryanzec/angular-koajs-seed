@@ -3,6 +3,7 @@ var async = require('async');
 var del = require('del');
 var gulpConfig = require('../config.js');
 var runSequence = require('run-sequence');
+var fs = require('fs');
 
 gulp.task('clean-build', 'Remove all build data and code in order to perform a build from scratch', function(done) {
   function removeBuildMetaData(cb) {
@@ -17,11 +18,19 @@ gulp.task('clean-build', 'Remove all build data and code in order to perform a b
     del('./.sass-cache', cb);
   }
 
+  function myDone() {
+    if(!fs.existsSync(process.cwd() + '/' + gulpConfig.buildPath)) {
+      fs.mkdirSync(process.cwd() + '/' + gulpConfig.buildPath);
+    }
+
+    done();
+  }
+
   async.series([
     removeBuildMetaData,
     removeBuildCode,
     removeSassCache
-  ], done);
+  ], myDone);
 });
 
 gulp.task('build-clean', "Perform a clean build", function(done) {
