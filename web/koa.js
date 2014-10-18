@@ -18,7 +18,7 @@ app.use(function *() {
   var isHtmlFileRequest = this.path.substr(-5) === '.html';
   var filePath = this.path.substr(1);
   var rootDirectory = this.path.split('/')[1];
-  var buildPath = 'app/build';
+  var buildPath = 'build';
   var validRootDirectories = [
     'app',
     'components',

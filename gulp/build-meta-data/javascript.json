@@ -3,18 +3,6 @@
     "web/components/angular-mockable-http-provider/mockable-http-provider.js": {
       "fileHash": "9560718d7fdef92ddb966640f0366975172218f4"
     },
-    "web/components/jshashes/hashes.js": {
-      "fileHash": "f20145b631c904d5a35410bb0f0bbd38eae71f7b"
-    },
-    "web/components/jquery/dist/jquery.js": {
-      "fileHash": "8d55aabf2b76486cc311fdc553a3613cad46aa3f"
-    },
-    "web/components/angular/angular.js": {
-      "fileHash": "f8acd519607f5bc054576e35352233cc17812cc2"
-    },
-    "web/components/angular-ui-router/release/angular-ui-router.js": {
-      "fileHash": "3d4aab2bffc95cf758066c6a024bb24aa2601b31"
-    },
     "web/app/application.js": {
       "fileHash": "f0018cc4fd42dc4c846b493f690cb02108423f0e"
     },
@@ -29,24 +17,36 @@
     },
     "web/app/components/home/home-controller.js": {
       "fileHash": "708f85bda7efa8dbe01521014f13527f0fc5eb24"
+    },
+    "web/components/jshashes/hashes.js": {
+      "fileHash": "f20145b631c904d5a35410bb0f0bbd38eae71f7b"
+    },
+    "web/components/jquery/dist/jquery.js": {
+      "fileHash": "8d55aabf2b76486cc311fdc553a3613cad46aa3f"
+    },
+    "web/components/angular/angular.js": {
+      "fileHash": "f8acd519607f5bc054576e35352233cc17812cc2"
+    },
+    "web/components/angular-ui-router/release/angular-ui-router.js": {
+      "fileHash": "3d4aab2bffc95cf758066c6a024bb24aa2601b31"
     }
   },
   "buildFiles": {
-    "web/app/build/ui-testing.js": [
+    "web/build/ui-testing.js": [
       "web/components/angular-mockable-http-provider/mockable-http-provider.js"
     ],
-    "web/app/build/libraries.js": [
-      "web/components/jshashes/hashes.js",
-      "web/components/jquery/dist/jquery.js",
-      "web/components/angular/angular.js",
-      "web/components/angular-ui-router/release/angular-ui-router.js"
-    ],
-    "web/app/build/application.js": [
+    "web/build/application.js": [
       "web/app/application.js",
       "web/app/components/core/module.js",
       "web/app/components/home/module.js",
       "web/app/components/core/template-modifier-interceptor-factory.js",
       "web/app/components/home/home-controller.js"
+    ],
+    "web/build/libraries.js": [
+      "web/components/jshashes/hashes.js",
+      "web/components/jquery/dist/jquery.js",
+      "web/components/angular/angular.js",
+      "web/components/angular-ui-router/release/angular-ui-router.js"
     ]
   }
 }

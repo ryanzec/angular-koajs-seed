@@ -13,9 +13,9 @@
   "files": [
     "../karma/es5-shim.js",
     "components/lodash/dist/lodash.min.js",
-    "app/build/libraries.js",
+    "build/libraries.js",
     "components/angular-mocks/angular-mocks.js",
-    "app/build/application.js",
+    "build/application.js",
     "app/**/*.spec.js"
   ]
 }

@@ -1,7 +1,7 @@
 var gulpConfig = {
   webPath: 'web',
   appPath: 'web/app',
-  buildPath: 'web/app/build',
+  buildPath: 'web/build',
   vendorComponentsPath: 'web/components',
   compileFiles: {
     javascript: {
@@ -24,7 +24,7 @@ var gulpConfig = {
       ]
     },
     sass: {
-      'web/app/styles/main.scss': 'web/app/build/main.css'
+      'web/app/styles/main.scss': 'web/build/main.css'
     }
   },
   sourceFiles: {
@@ -61,7 +61,7 @@ var gulpConfig = {
     staticRewrite: {
       fileTypesToRewrite: ['svg', 'eot', 'ttf', 'woff', 'png', 'gif', 'jpeg', 'jpg', 'js', 'css', 'map', 'html'],
       fileTypesToProcess: ['html', 'css', 'js'],
-      assetPaths: ['app', 'components'],
+      assetPaths: ['app', 'components', 'build'],
       prependSlash: true,
       domains: [],
       //any resources that ends in .html that can't be found will search for a file of the same name that ends in .jade for meta data (to determine hash)

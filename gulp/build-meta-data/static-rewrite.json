@@ -3,57 +3,6 @@
     "web/app/application.js": {
       "fileHash": "f0018cc4fd42dc4c846b493f690cb02108423f0e"
     },
-    "web/app/build/app/components/core/assets/templates/footer.html": {
-      "fileHash": "b37b6f2243a8f36dfd164cba278f81670310aae7"
-    },
-    "web/app/build/app/components/core/assets/templates/header.html": {
-      "fileHash": "f24886eddeeba13b6bf4b03fb4aef082c333bc67"
-    },
-    "web/app/build/app/components/core/assets/templates/module-wrapper.html": {
-      "fileHash": "4d6e976842be96713c64de27f84bb9fa54faf0a5"
-    },
-    "web/app/build/app/components/home/assets/templates/home.html": {
-      "fileHash": "ba2cfcf65d59e72cca0a2497db1cde865415bfc4"
-    },
-    "web/app/build/application.js": {
-      "fileHash": "bad5bd61e4b40f099c807b0689550dfa62f2c444"
-    },
-    "web/app/build/application.js.map": {
-      "fileHash": "2ad655b06ba0dc78494609db5ce9916eae1732eb"
-    },
-    "web/app/build/application.production.js": {
-      "fileHash": "560be0875958b8f83a2b89da67ed5be3d0fcb591"
-    },
-    "web/app/build/index-ut.html": {
-      "fileHash": "44cea0fac9aa9e010bc572944656c6c4c6d0e26f"
-    },
-    "web/app/build/index.html": {
-      "fileHash": "175049212867e1a3c0c357b2f5298daf2a731541"
-    },
-    "web/app/build/libraries.js": {
-      "fileHash": "127ed5383fd72797063971d2cf89b564097cca12"
-    },
-    "web/app/build/libraries.js.map": {
-      "fileHash": "29c3398d3c2ec2bfbaedfeaa9d650ec06b23e521"
-    },
-    "web/app/build/libraries.production.js": {
-      "fileHash": "dc71c0ea465ce451033be4bcc7e5b74683e2eb1b"
-    },
-    "web/app/build/main.css": {
-      "fileHash": "b78a63cb73d634843b2e7272bdfd2b65a0033936"
-    },
-    "web/app/build/main.css.map": {
-      "fileHash": "fef9276042fdb81117287df3a59358b5e593362e"
-    },
-    "web/app/build/ui-testing.js": {
-      "fileHash": "1238797037c2d9d79e4583bccd0ccf0529802dd4"
-    },
-    "web/app/build/ui-testing.js.map": {
-      "fileHash": "1a2bcea3779113512f810c45952aad12b5cfd133"
-    },
-    "web/app/build/ui-testing.production.js": {
-      "fileHash": "678c09c81bfded9a863512a06862a53de06dbd50"
-    },
     "web/app/components/core/module.js": {
       "fileHash": "b8b7adca9f4cf17f94f56905f76cbf8d421255ff"
     },
@@ -89,6 +38,45 @@
     },
     "web/components/lodash/dist/lodash.min.js": {
       "fileHash": "b6f3f357d0914141593d39842f4410f6d03d3ebf"
+    },
+    "web/build/app/components/core/assets/templates/footer.html": {
+      "fileHash": "b37b6f2243a8f36dfd164cba278f81670310aae7"
+    },
+    "web/build/app/components/core/assets/templates/header.html": {
+      "fileHash": "f24886eddeeba13b6bf4b03fb4aef082c333bc67"
+    },
+    "web/build/app/components/core/assets/templates/module-wrapper.html": {
+      "fileHash": "4d6e976842be96713c64de27f84bb9fa54faf0a5"
+    },
+    "web/build/app/components/home/assets/templates/home.html": {
+      "fileHash": "ba2cfcf65d59e72cca0a2497db1cde865415bfc4"
+    },
+    "web/build/application.js": {
+      "fileHash": "bad5bd61e4b40f099c807b0689550dfa62f2c444"
+    },
+    "web/build/application.production.js": {
+      "fileHash": "560be0875958b8f83a2b89da67ed5be3d0fcb591"
+    },
+    "web/build/index-ut.html": {
+      "fileHash": "4de9af82422f39c7c23a07ed628c5b6210cee44a"
+    },
+    "web/build/index.html": {
+      "fileHash": "2db7d3d76c6dfe30ea201c3d497ba67f925610ff"
+    },
+    "web/build/libraries.js": {
+      "fileHash": "127ed5383fd72797063971d2cf89b564097cca12"
+    },
+    "web/build/libraries.production.js": {
+      "fileHash": "dc71c0ea465ce451033be4bcc7e5b74683e2eb1b"
+    },
+    "web/build/main.css": {
+      "fileHash": "b78a63cb73d634843b2e7272bdfd2b65a0033936"
+    },
+    "web/build/ui-testing.js": {
+      "fileHash": "1238797037c2d9d79e4583bccd0ccf0529802dd4"
+    },
+    "web/build/ui-testing.production.js": {
+      "fileHash": "678c09c81bfded9a863512a06862a53de06dbd50"
     }
   },
   "buildFiles": {}
