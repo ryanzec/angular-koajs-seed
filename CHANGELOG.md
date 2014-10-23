@@ -4,6 +4,7 @@
 
 This version now requires AngularJS 1.3.0-RC.0+ and Sass 3.4+.
 
+- fixed issue were angular application could not have a route that matched one of the the valid root directories
 - converted from dalek to protractor for end to end testing
 - replaced all .html file with .jade
 - updated bower/npm packages

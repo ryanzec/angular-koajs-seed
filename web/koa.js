@@ -4,10 +4,18 @@ var path = require('path');
 var koa = require('koa');
 var app = module.exports = koa();
 
-//yield compatible read file
+//yield compatible function
 function readFile(file) {
   return function(fn){
     fs.readFile(file, 'utf8', fn);
+  }
+}
+
+function fileExists(file) {
+  return function(fn){
+    fs.exists(file, function(exists) {
+      fn(null, exists);
+    });
   }
 }
 
@@ -23,24 +31,33 @@ app.use(function *() {
     'app',
     'components',
     'static',
-    'source'
+    'source',
+    'build'
   ];
+  var loadIndex = true;
 
+  //TODO: need to figure out cache system for static resources
   if(isHtmlFileRequest) {
     //serve the build version of the html which is compressed
     yield send(this, convertStaticPath(buildPath + '/' + filePath), {
       root: __dirname
     });
+    loadIndex = false;
   } else if(validRootDirectories.indexOf(rootDirectory) !== -1) {
     //rewrite file path for static based URIs
     if(filePath.substr(0, 6) === 'static') {
       filePath = filePath.split('/').splice(2).join('/')
     };
 
-    yield send(this, convertStaticPath(filePath), {
-      root: __dirname
-    });
-  } else {
+    if(yield fileExists(__dirname + '/' + convertStaticPath(filePath))) {
+      yield send(this, convertStaticPath(filePath), {
+        root: __dirname
+      });
+      loadIndex = false;
+    }
+  }
+
+  if(loadIndex === true) {
     //determine the index file to load
     var indexFile = 'index.html';
 
