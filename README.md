@@ -1,3 +1,5 @@
+**Since I am no longer using either NodeJS as a backend language of AngularJS as a frontend library, I am no longer maintaining this project.  I would recommend looking at GoLang (https://golang.org/) as a backend language and ReactJS (https://github.com/facebook/react) as a frontend library.**
+
 # AngularJS/KoaJS Seed #
 
 This is a seed for an AngularJS and ExpressJS application.  This setup should allow you to get an application quickly up a running all locally with a computer that has NodeJS installed on it.
