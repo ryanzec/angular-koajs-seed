@@ -1,4 +1,4 @@
-**Since I am no longer using either NodeJS as a backend language of AngularJS as a frontend library, I am no longer maintaining this project.  I would recommend looking at GoLang (https://golang.org/) as a backend language and ReactJS (https://github.com/facebook/react) as a frontend library.**
+**Since I am no longer using either NodeJS as a backend language or AngularJS as a frontend library, I am no longer maintaining this project.  I would recommend looking at GoLang (https://golang.org/) as a backend language and ReactJS (https://github.com/facebook/react) as a frontend library.**
 
 # AngularJS/KoaJS Seed #
 
